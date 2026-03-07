@@ -1,0 +1,17 @@
+{
+  "name": "shellcn-monorepo",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Terminal UI component ecosystem inspired by shadcn/ui, built on Ink",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=packages/cli",
+    "dev:preview": "npx tsx watch examples/dev-playground/index.tsx",
+    "dev:chat": "npx tsx watch examples/demo-chat/index.tsx",
+    "dev:tasks": "npx tsx watch examples/demo-task-manager/index.tsx"
+  },
+  "license": "MIT"
+}

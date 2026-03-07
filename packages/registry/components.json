@@ -1,0 +1,44 @@
+{
+  "components": {
+    "text": {
+      "path": "components/text.tsx",
+      "description": "Styled text with color, bold, dim, underline, and strikethrough support"
+    },
+    "box": {
+      "path": "components/box.tsx",
+      "description": "Layout container with padding, margin, border, and flex"
+    },
+    "spinner": {
+      "path": "components/spinner.tsx",
+      "description": "Animated loading spinner with customizable frames and label"
+    },
+    "progress": {
+      "path": "components/progress.tsx",
+      "description": "Progress bar with percentage display and customizable fill"
+    },
+    "table": {
+      "path": "components/table.tsx",
+      "description": "Data table with headers, column alignment, and borders"
+    },
+    "input": {
+      "path": "components/input.tsx",
+      "description": "Text input with placeholder, onChange, and onSubmit"
+    },
+    "select": {
+      "path": "components/select.tsx",
+      "description": "Arrow-key select menu with highlight styling"
+    },
+    "checkbox": {
+      "path": "components/checkbox.tsx",
+      "description": "Multi-select checkbox list with toggle support"
+    },
+    "alert": {
+      "path": "components/alert.tsx",
+      "description": "Alert box with info, success, warning, and error variants"
+    },
+    "card": {
+      "path": "components/card.tsx",
+      "description": "Bordered card container with optional title and footer"
+    }
+  }
+}
