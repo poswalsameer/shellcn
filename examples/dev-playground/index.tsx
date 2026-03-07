@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { render, Text as InkText, Box as InkBox } from "ink"
+import React, { useState } from "react"
+import { render, Text as InkText, Box as InkBox, useApp, useInput } from "ink"
 
 /**
  * Dev Playground — Live Component Preview
@@ -38,17 +38,18 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   </InkBox>
 )
 
+
 const App: React.FC = () => {
-  const [progress, setProgress] = useState(0)
+  const { exit } = useApp()
   const [inputValue, setInputValue] = useState("")
 
-  // Animate progress bar
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => (prev >= 1 ? 0 : prev + 0.02))
-    }, 100)
-    return () => clearInterval(timer)
-  }, [])
+  // Handle Ctrl+C and 'q' to exit
+  useInput((input, key) => {
+    if (input === "q" || (key.ctrl && input === "c")) {
+      exit()
+      setTimeout(() => process.exit(0), 100)
+    }
+  })
 
   return (
     <InkBox flexDirection="column" padding={1}>
@@ -80,15 +81,16 @@ const App: React.FC = () => {
 
       {/* 3. Spinner */}
       <Section title="Spinner">
-        <Spinner label="Loading (dots)..." color="cyan" type="dots" />
-        <Spinner label="Processing (arc)..." color="yellow" type="arc" />
-        <Spinner label="Building (circle)..." color="green" type="circle" />
+        <Spinner label="Loading (dots)..." color="cyan" type="dots" interval={500} />
+        <InkText dimColor>  Presets: dots ⠋⠙⠹  arc ◜◠◝  circle ◐◓◑  line -\|/  bounce ⠁⠂⠄</InkText>
       </Section>
 
       {/* 4. Progress */}
       <Section title="Progress">
-        <Progress value={progress} color="green" showPercentage />
-        <Progress value={0.75} color="blue" fillChar="▓" emptyChar="░" label="Upload:" />
+        <Progress value={0.35} color="yellow" showPercentage label="Build:" />
+        <Progress value={0.68} color="cyan" showPercentage label="Test: " />
+        <Progress value={1.0} color="green" showPercentage label="Lint: " />
+        <Progress value={0.5} color="blue" fillChar="▓" emptyChar="░" label="Upload:" showPercentage />
       </Section>
 
       {/* 5. Table */}
@@ -163,7 +165,7 @@ const App: React.FC = () => {
       </Section>
 
       <InkText> </InkText>
-      <InkText dimColor>Press Ctrl+C to exit</InkText>
+      <InkText dimColor>Press q or Ctrl+C to exit</InkText>
     </InkBox>
   )
 }

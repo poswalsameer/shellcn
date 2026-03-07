@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { render, Box as InkBox, Text as InkText, useApp } from "ink"
+import { render, Box as InkBox, Text as InkText, useApp, useInput } from "ink"
 
 // Import shellcn components from the registry
 import { Text } from "../../packages/registry/components/text.js"
@@ -35,10 +35,18 @@ const AI_RESPONSES = [
 const ChatApp: React.FC = () => {
   const { exit } = useApp()
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hello! I'm shellcn AI. Ask me anything about terminal UIs. (Type 'quit' to exit)" },
+    { role: "assistant", content: "Hello! I'm shellcn AI. Ask me anything about terminal UIs. (Type 'quit' or press Ctrl+C to exit)" },
   ])
   const [inputValue, setInputValue] = useState("")
   const [isThinking, setIsThinking] = useState(false)
+
+  // Handle Ctrl+C to exit
+  useInput((input, key) => {
+    if (key.ctrl && input === "c") {
+      exit()
+      setTimeout(() => process.exit(0), 100)
+    }
+  })
 
   const handleSubmit = (value: string) => {
     if (!value.trim()) return

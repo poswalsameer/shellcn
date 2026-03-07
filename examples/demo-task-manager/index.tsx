@@ -43,6 +43,7 @@ const TaskManagerApp: React.FC = () => {
   useInput((input, key) => {
     if (input === "q" || (key.ctrl && input === "c")) {
       exit()
+      setTimeout(() => process.exit(0), 100)
     }
   })
 
