@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { render, useApp, useInput } from "ink"
+import { render, useApp } from "ink"
 
 /**
  * Dev Playground — Live Component Preview
@@ -28,11 +28,11 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
 }) => (
-  <Container flexDirection="column" marginBottom={1}>
-    <Text bold color="magenta">
-      {"─── "}{title}{" ───"}
+  <Container flexDirection="column" gap={1}>
+    <Text bold color="white">
+      {title}
     </Text>
-    <Container marginLeft={2} flexDirection="column">
+    <Container flexDirection="column">
       {children}
     </Container>
   </Container>
@@ -43,29 +43,10 @@ const App: React.FC = () => {
   const { exit } = useApp()
   const [inputValue, setInputValue] = useState("")
 
-  // Handle Ctrl+C and 'q' to exit
-  useInput((input, key) => {
-    if (input === "q" || (key.ctrl && input === "c")) {
-      exit()
-      setTimeout(() => process.exit(0), 100)
-    }
-  })
-
   return (
-    <Container flexDirection="column" padding={1}>
-      <Text bold color="cyan">
-        {"╔══════════════════════════════════════════╗"}
-      </Text>
-      <Text bold color="cyan">
-        {"║    shellcn — Component Preview           ║"}
-      </Text>
-      <Text bold color="cyan">
-        {"╚══════════════════════════════════════════╝"}
-      </Text>
-      <Text> </Text>
-
+    <Container flexDirection="column" padding={1} gap={2}>
       {/* 1. Text */}
-      <Section title="Text">
+      <Section title="• TEXT">
         <Text color="green" bold>Bold green text</Text>
         <Text dimmed>Dimmed text</Text>
         <Text color="yellow" underline>Underlined yellow</Text>
@@ -73,21 +54,21 @@ const App: React.FC = () => {
       </Section>
 
       {/* 2. Container */}
-      <Section title="Container">
+      <Section title="• CONTAINER">
         <Container radius="round" borderColor="blue" padding={1}>
           <Text color="blue">Container with border radius and padding</Text>
         </Container>
       </Section>
 
       {/* 3. Separator */}
-      <Section title="Separator">
+      <Section title="• SEPARATOR">
         <Text dimmed>Above separator</Text>
         <Separator color="magenta" />
         <Text dimmed>Below separator</Text>
       </Section>
 
       {/* 4. Progress */}
-      <Section title="Progress">
+      <Section title="• PROGRESS">
         <Progress value={0.35} color="yellow" showPercentage label="Build:" />
         <Progress value={0.68} color="cyan" showPercentage label="Test: " />
         <Progress value={1.0} color="green" showPercentage label="Lint: " />
@@ -95,7 +76,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 5. Table */}
-      <Section title="Table">
+      <Section title="• TABLE">
         <Table
           columns={[
             { header: "Name", accessor: "name", width: 15 },
@@ -112,7 +93,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 6. Input */}
-      <Section title="Input">
+      <Section title="• INPUT">
         <Input
           label="Name:"
           placeholder="Type something..."
@@ -123,7 +104,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 7. Select */}
-      <Section title="Select">
+      <Section title="• SELECT">
         <Select
           label="Pick a framework:"
           options={[
@@ -136,7 +117,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 8. Checkbox */}
-      <Section title="Checkbox">
+      <Section title="• CHECKBOX">
         <Checkbox
           label="Select features:"
           items={[
@@ -149,7 +130,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 9. Alert */}
-      <Section title="Alert">
+      <Section title="• ALERT">
         <Alert variant="info" radius="none">This is an info alert with square corners.</Alert>
         <Alert variant="success" title="Success" radius="round">Operation completed.</Alert>
         <Alert variant="warning" radius="round" alignItems="center">Center aligned warning.</Alert>
@@ -159,7 +140,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 10. Card */}
-      <Section title="Card">
+      <Section title="• CARD">
         <Card borderColor="cyan" radius="round">
           <CardTitle color="white">System Info</CardTitle>
           <Text>CPU Usage: 42%</Text>
@@ -168,9 +149,6 @@ const App: React.FC = () => {
           <CardFooter>Updated just now</CardFooter>
         </Card>
       </Section>
-
-      <Text> </Text>
-      <Text dimmed>Press q or Ctrl+C to exit</Text>
     </Container>
   )
 }
