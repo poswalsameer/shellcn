@@ -11,6 +11,9 @@ export interface CheckboxItem {
   checked?: boolean
 }
 
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
 /** Props for the Checkbox component. */
 export interface CheckboxProps {
   /** List of items to display. */
@@ -29,6 +32,11 @@ export interface CheckboxProps {
   uncheckedChar?: string
   /** Whether the checkbox is focused and accepting input. */
   focus?: boolean
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
 }
 
 /**
@@ -57,6 +65,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   checkedChar = "◉",
   uncheckedChar = "○",
   focus = true,
+  radius = "round",
 }) => {
   const [items, setItems] = useState<CheckboxItem[]>(
     initialItems.map((item) => ({ ...item, checked: item.checked ?? false }))
@@ -96,31 +105,51 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     { isActive: focus }
   )
 
+  const resolvedBorderStyle = radius === "none" ? "single" : "round"
+  const resolvedBorderColor = focus ? highlightColor : "gray"
+
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      borderStyle={resolvedBorderStyle}
+      borderColor={resolvedBorderColor}
+    >
       {label && (
-        <Box marginBottom={1}>
-          <Text bold>{label}</Text>
+        <Box
+          borderStyle="single"
+          borderTop={false}
+          borderBottom={true}
+          borderLeft={false}
+          borderRight={false}
+          borderColor={resolvedBorderColor}
+          paddingLeft={1}
+          paddingRight={1}
+        >
+          <Text bold color={resolvedBorderColor}>
+            {label}
+          </Text>
         </Box>
       )}
-      {items.map((item, index) => {
-        const isFocused = index === focusIndex
-        return (
-          <Box key={item.value} flexDirection="row" gap={1}>
-            <Text color={item.checked ? "green" : "gray"}>
-              {item.checked ? checkedChar : uncheckedChar}
-            </Text>
-            <Text
-              color={isFocused ? highlightColor : undefined}
-              bold={isFocused}
-            >
-              {item.label}
-            </Text>
-          </Box>
-        )
-      })}
-      <Box marginTop={1}>
-        <Text dimColor>↑↓ navigate · space toggle · enter confirm</Text>
+      <Box flexDirection="column" paddingX={1}>
+        {items.map((item, index) => {
+          const isFocused = index === focusIndex
+          return (
+            <Box key={item.value} flexDirection="row" gap={1}>
+              <Text color={item.checked ? "green" : "gray"}>
+                {item.checked ? checkedChar : uncheckedChar}
+              </Text>
+              <Text
+                color={isFocused ? highlightColor : undefined}
+                bold={isFocused}
+              >
+                {item.label}
+              </Text>
+            </Box>
+          )
+        })}
+        <Box marginTop={1}>
+          <Text dimColor>↑↓ navigate · space toggle · enter confirm</Text>
+        </Box>
       </Box>
     </Box>
   )

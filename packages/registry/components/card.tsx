@@ -1,6 +1,9 @@
 import React from "react"
 import { Text, Box } from "ink"
 
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
 /** Props for the Card component. */
 export interface CardProps {
   /** Content of the card body. */
@@ -11,7 +14,12 @@ export interface CardProps {
   footer?: string
   /** Width of the card. */
   width?: number | string
-  /** Border style. */
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
+  /** Optional manual override for border style. */
   borderStyle?: "single" | "double" | "round" | "bold" | "classic"
   /** Border color. */
   borderColor?: string
@@ -29,7 +37,7 @@ export interface CardProps {
  *
  * @example
  * ```tsx
- * <Card title="System Info" footer="Last updated: now" borderColor="cyan">
+ * <Card title="System Info" footer="Last updated: now" borderColor="cyan" radius="round">
  *   <Text>CPU: 45%</Text>
  *   <Text>Memory: 2.1 GB</Text>
  * </Card>
@@ -40,16 +48,21 @@ export const Card: React.FC<CardProps> = ({
   title,
   footer,
   width,
-  borderStyle = "round",
+  radius,
+  borderStyle,
   borderColor = "white",
   titleColor = "white",
   footerColor = "gray",
   padding = 1,
 }) => {
+  const resolvedBorderStyle = radius
+    ? (radius === "none" ? "single" : "round")
+    : (borderStyle ?? "round")
+
   return (
     <Box
       flexDirection="column"
-      borderStyle={borderStyle}
+      borderStyle={resolvedBorderStyle}
       borderColor={borderColor}
       width={width}
       paddingLeft={padding}

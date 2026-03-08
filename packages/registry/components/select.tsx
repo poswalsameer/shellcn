@@ -9,6 +9,9 @@ export interface SelectOption {
   value: string
 }
 
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
 /** Props for the Select component. */
 export interface SelectProps {
   /** List of options to display. */
@@ -27,6 +30,11 @@ export interface SelectProps {
   initialIndex?: number
   /** Whether the select is focused and accepting input. */
   focus?: boolean
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
 }
 
 /**
@@ -55,6 +63,7 @@ export const Select: React.FC<SelectProps> = ({
   indicator = "❯",
   initialIndex = 0,
   focus = true,
+  radius = "round",
 }) => {
   const [highlightedIndex, setHighlightedIndex] = useState(initialIndex)
 
@@ -84,29 +93,49 @@ export const Select: React.FC<SelectProps> = ({
     { isActive: focus }
   )
 
+  const resolvedBorderStyle = radius === "none" ? "single" : "round"
+  const resolvedBorderColor = focus ? highlightColor : "gray"
+
   return (
-    <Box flexDirection="column">
+    <Box
+      flexDirection="column"
+      borderStyle={resolvedBorderStyle}
+      borderColor={resolvedBorderColor}
+    >
       {label && (
-        <Box marginBottom={1}>
-          <Text bold>{label}</Text>
+        <Box
+          borderStyle="single"
+          borderTop={false}
+          borderBottom={true}
+          borderLeft={false}
+          borderRight={false}
+          borderColor={resolvedBorderColor}
+          paddingLeft={1}
+          paddingRight={1}
+        >
+          <Text bold color={resolvedBorderColor}>
+            {label}
+          </Text>
         </Box>
       )}
-      {options.map((option, index) => {
-        const isHighlighted = index === highlightedIndex
-        return (
-          <Box key={option.value} flexDirection="row" gap={1}>
-            <Text color={isHighlighted ? highlightColor : undefined}>
-              {isHighlighted ? indicator : " "}
-            </Text>
-            <Text
-              color={isHighlighted ? highlightColor : undefined}
-              bold={isHighlighted}
-            >
-              {option.label}
-            </Text>
-          </Box>
-        )
-      })}
+      <Box flexDirection="column" paddingX={1}>
+        {options.map((option, index) => {
+          const isHighlighted = index === highlightedIndex
+          return (
+            <Box key={option.value} flexDirection="row" gap={1}>
+              <Text color={isHighlighted ? highlightColor : undefined}>
+                {isHighlighted ? indicator : " "}
+              </Text>
+              <Text
+                color={isHighlighted ? highlightColor : undefined}
+                bold={isHighlighted}
+              >
+                {option.label}
+              </Text>
+            </Box>
+          )
+        })}
+      </Box>
     </Box>
   )
 }

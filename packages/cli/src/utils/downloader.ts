@@ -5,7 +5,7 @@ import { resolveComponentPath } from "./registry.js"
 /**
  * Copies a component template from the registry into the user's project.
  *
- * @param componentPath - Relative path of the component in the registry (e.g., "components/spinner.tsx")
+ * @param componentPath - Relative path of the component in the registry (e.g., "components/separator.tsx")
  * @param targetDir - Absolute path to the user's components directory
  * @returns The absolute path where the component was written
  */

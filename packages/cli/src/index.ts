@@ -1,7 +1,7 @@
 import { Command } from "commander"
 import { VERSION } from "./config/defaults.js"
-import { initCommand } from "./commands/init.js"
 import { addCommand } from "./commands/add.js"
+import { initCommand } from "./commands/init.js"
 import { listCommand } from "./commands/list.js"
 
 /** shellcn CLI — Terminal UI component system inspired by shadcn/ui. */

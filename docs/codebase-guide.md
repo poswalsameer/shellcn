@@ -62,7 +62,7 @@ These files set up the entire monorepo — they tell npm how the project is orga
 
 ## CLI Package — `packages/cli/`
 
-This is the **brain of shellcn** — the command-line tool that users interact with. When someone runs `npx shellcn init` or `npx shellcn add spinner`, this is the code that executes.
+This is the **brain of shellcn** — the command-line tool that users interact with. When someone runs `npx shellcn init` or `npx shellcn add separator`, this is the code that executes.
 
 ### `packages/cli/package.json` — CLI Package Manifest
 
@@ -174,14 +174,14 @@ Key functions:
    - Throws an error if the file doesn't exist
 
 3. **`getComponent(name)`**
-   - Looks up a single component by name (e.g., `"spinner"`)
+   - Looks up a single component by name (e.g., `"separator"`)
    - Returns the component entry or `null`
 
 4. **`listComponents()`**
    - Returns an array of all component names
 
 5. **`resolveComponentPath(componentPath)`**
-   - Converts a relative registry path (e.g., `"components/spinner.tsx"`) to an absolute file path
+   - Converts a relative registry path (e.g., `"components/separator.tsx"`) to an absolute file path
 
 ---
 
@@ -219,13 +219,13 @@ Two functions:
 
 ### `src/commands/add.ts` — The `shellcn add <component>` Command
 
-**What it does when you run `npx shellcn add spinner`:**
+**What it does when you run `npx shellcn add separator`:**
 
 1. Reads the project config (ensures shellcn is initialized)
-2. Looks up `"spinner"` in the registry
+2. Looks up `"separator"` in the registry
 3. If the component doesn't exist in the registry → error message
 4. If the component file already exists in the user's project → asks "Overwrite? [y/N]"
-5. Copies the component template into `src/components/shellcn/spinner.tsx`
+5. Copies the component template into `src/components/shellcn/separator.tsx`
 6. Prints success message and any extra dependencies needed
 
 The `confirm()` helper function creates a simple yes/no prompt using Node's `readline` module.
@@ -266,16 +266,16 @@ program.parse()
 
 ## Component Registry — `packages/registry/`
 
-This is the **library of component templates**. When a user runs `shellcn add spinner`, the CLI reads from this folder and copies the component into their project.
+This is the **library of component templates**. When a user runs `shellcn add separator`, the CLI reads from this folder and copies the component into their project.
 
 ### `packages/registry/components.json` — The Manifest
 
 ```json
 {
   "components": {
-    "spinner": {
-      "path": "components/spinner.tsx",
-      "description": "Animated loading spinner with customizable frames and label"
+    "separator": {
+      "path": "components/separator.tsx",
+      "description": "Visually or semantically separates content."
     }
   }
 }
@@ -325,7 +325,7 @@ Let me explain each one:
 
 ---
 
-### `components/box.tsx` — Layout Container
+### `components/container.tsx` — Layout Container
 
 **Purpose:** Create layouts with padding, margins, borders, and flexbox.
 
@@ -333,33 +333,34 @@ Let me explain each one:
 
 - Wraps Ink's `<Box>` with convenience props like `paddingX`, `paddingY`, `marginX`, `marginY`
 - Ink's Box uses flexbox by default (like CSS), so you get `flexDirection`, `alignItems`, `justifyContent`, `gap`
+- `radius` accepts `"none"` or `"round"`. Under the hood this maps to `borderStyle` values.
 - `borderStyle` accepts values like `"round"`, `"double"`, `"bold"`, etc.
 
 **Example usage:**
 
 ```tsx
-<Box padding={1} borderStyle="round" borderColor="cyan">
-  <Text>Inside a bordered box</Text>
-</Box>
+<Container padding={1} radius="round" borderColor="cyan">
+  <Text>Inside a bordered container</Text>
+</Container>
 ```
 
 ---
 
-### `components/spinner.tsx` — Loading Spinner
+### `components/separator.tsx` — Separator
 
-**Purpose:** Show an animated loading indicator.
+**Purpose:** Visually or semantically separates content with a line.
 
 **How it works:**
 
-- Has 5 built-in frame sets: `dots` (⠋⠙⠹...), `line` (-\|/), `arc` (◜◠◝...), `bounce`, `circle`
-- Uses `useState` + `useEffect` with `setInterval` to cycle through frames
-- The interval timer advances the frame index, React re-renders the component with the new frame
-- Accepts custom frames too (`frames={["🌑", "🌒", "🌓"]}`)
+- Uses Ink's `Box` with specific border borders turned on to draw the line
+- `orientation="horizontal"` uses a bottom border and stretches to `width="100%"`
+- `orientation="vertical"` uses a left border and stretches to `height="100%"`
+- Accepts a `color` prop to style the line
 
 **Example usage:**
 
 ```tsx
-<Spinner label="Loading..." color="cyan" />
+<Separator color="cyan" />
 ```
 
 ---
@@ -587,27 +588,27 @@ The `tsconfig.json` files extend the root config and include the registry compon
 ## How Everything Connects
 
 ```
-User types: npx shellcn add spinner
+User types: npx shellcn add separator
      │
      ▼
 packages/cli/dist/index.js        ← shebang makes this executable
      │
      ▼
-src/index.ts                       ← Commander parses "add spinner"
+src/index.ts                       ← Commander parses "add separator"
      │
      ▼
-src/commands/add.ts                ← addCommand("spinner") runs
+src/commands/add.ts                ← addCommand("separator") runs
      │
      ├── src/utils/project.ts      ← reads shellcn.config.json
-     ├── src/utils/registry.ts     ← looks up "spinner" in components.json
-     └── src/utils/downloader.ts   ← copies spinner.tsx to user's project
+     ├── src/utils/registry.ts     ← looks up "separator" in components.json
+     └── src/utils/downloader.ts   ← copies separator.tsx to user's project
            │
            ▼
-packages/registry/components.json  ← finds { path: "components/spinner.tsx" }
+packages/registry/components.json  ← finds { path: "components/separator.tsx" }
            │
            ▼
-packages/registry/components/spinner.tsx  ← source template
+packages/registry/components/separator.tsx  ← source template
            │
            ▼
-user-project/src/components/shellcn/spinner.tsx  ← installed! ✓
+user-project/src/components/shellcn/separator.tsx  ← installed! ✓
 ```

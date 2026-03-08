@@ -4,13 +4,13 @@
       "path": "components/text.tsx",
       "description": "Styled text with color, bold, dim, underline, and strikethrough support"
     },
-    "box": {
-      "path": "components/box.tsx",
+    "container": {
+      "path": "components/container.tsx",
       "description": "Layout container with padding, margin, border, and flex"
     },
-    "spinner": {
-      "path": "components/spinner.tsx",
-      "description": "Animated loading spinner with customizable frames and label"
+    "separator": {
+      "path": "components/separator.tsx",
+      "description": "Visually or semantically separates content."
     },
     "progress": {
       "path": "components/progress.tsx",

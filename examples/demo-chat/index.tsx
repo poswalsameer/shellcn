@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { render, Box as InkBox, Text as InkText, useApp, useInput } from "ink"
+import { render, useApp, useInput } from "ink"
 
 // Import shellcn components from the registry
 import { Text } from "../../packages/registry/components/text.js"
-import { Box } from "../../packages/registry/components/box.js"
+import { Container } from "../../packages/registry/components/container.js"
 import { Card } from "../../packages/registry/components/card.js"
-import { Spinner } from "../../packages/registry/components/spinner.js"
+
 import { Input } from "../../packages/registry/components/input.js"
 
 /**
@@ -14,7 +14,6 @@ import { Input } from "../../packages/registry/components/input.js"
  * A simple AI chat CLI demonstrating:
  * - Input component for message entry
  * - Card component for message bubbles
- * - Spinner component for "thinking" state
  * - Text component for styled content
  */
 
@@ -71,37 +70,42 @@ const ChatApp: React.FC = () => {
   }
 
   return (
-    <InkBox flexDirection="column" padding={1}>
+    <Container flexDirection="column" padding={1}>
       {/* Header */}
-      <Box borderStyle="double" borderColor="cyan" padding={1} paddingY={0}>
+      <Container borderStyle="double" borderColor="cyan" padding={1} paddingY={0}>
         <Text color="cyan" bold>shellcn Chat Demo</Text>
-      </Box>
+      </Container>
 
-      <InkText> </InkText>
+      <Text> </Text>
 
       {/* Messages */}
       {messages.map((msg, i) => (
-        <InkBox key={i} marginBottom={1} justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}>
+        <Container key={i} marginBottom={1} justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}>
+          {msg.role === "assistant" && (
+            <Text color="green" bold>
+              {"AI "}&nbsp;
+            </Text>
+          )}
           <Card
-            borderColor={msg.role === "user" ? "blue" : "green"}
-            borderStyle="round"
-            title={msg.role === "user" ? "You" : "AI"}
-            titleColor={msg.role === "user" ? "blue" : "green"}
+            borderColor={msg.role === "user" ? "gray" : "green"}
+            padding={1}
           >
-            <Text>{msg.content}</Text>
+            <Text color={msg.role === "user" ? "cyan" : "white"}>
+              {msg.content}
+            </Text>
           </Card>
-        </InkBox>
+        </Container>
       ))}
 
       {/* Thinking indicator */}
       {isThinking && (
-        <InkBox marginBottom={1}>
-          <Spinner label="AI is thinking..." color="yellow" type="dots" />
-        </InkBox>
+        <Container marginBottom={1}>
+          <Text color="yellow">AI is thinking...</Text>
+        </Container>
       )}
 
       {/* Input */}
-      <Box borderStyle="round" borderColor="gray" padding={1} paddingY={0}>
+      <Container borderStyle="round" borderColor="gray" padding={1} paddingY={0}>
         <Input
           label="You:"
           placeholder="Type a message..."
@@ -110,8 +114,8 @@ const ChatApp: React.FC = () => {
           onSubmit={handleSubmit}
           focus={!isThinking}
         />
-      </Box>
-    </InkBox>
+      </Container>
+    </Container>
   )
 }
 

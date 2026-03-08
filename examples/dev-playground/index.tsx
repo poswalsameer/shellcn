@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { render, Text as InkText, Box as InkBox, useApp, useInput } from "ink"
+import { render, useApp, useInput } from "ink"
 
 /**
  * Dev Playground — Live Component Preview
@@ -13,8 +13,8 @@ import { render, Text as InkText, Box as InkBox, useApp, useInput } from "ink"
 
 // ─── Import components directly from the registry ───────────────────────────
 import { Text } from "../../packages/registry/components/text.js"
-import { Box } from "../../packages/registry/components/box.js"
-import { Spinner } from "../../packages/registry/components/spinner.js"
+import { Container } from "../../packages/registry/components/container.js"
+import { Separator } from "../../packages/registry/components/separator.js"
 import { Progress } from "../../packages/registry/components/progress.js"
 import { Table } from "../../packages/registry/components/table.js"
 import { Input } from "../../packages/registry/components/input.js"
@@ -28,14 +28,14 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
 }) => (
-  <InkBox flexDirection="column" marginBottom={1}>
-    <InkText bold color="magenta">
+  <Container flexDirection="column" marginBottom={1}>
+    <Text bold color="magenta">
       {"─── "}{title}{" ───"}
-    </InkText>
-    <InkBox marginLeft={2} flexDirection="column">
+    </Text>
+    <Container marginLeft={2} flexDirection="column">
       {children}
-    </InkBox>
-  </InkBox>
+    </Container>
+  </Container>
 )
 
 
@@ -52,17 +52,17 @@ const App: React.FC = () => {
   })
 
   return (
-    <InkBox flexDirection="column" padding={1}>
-      <InkText bold color="cyan">
+    <Container flexDirection="column" padding={1}>
+      <Text bold color="cyan">
         {"╔══════════════════════════════════════════╗"}
-      </InkText>
-      <InkText bold color="cyan">
+      </Text>
+      <Text bold color="cyan">
         {"║    shellcn — Component Preview           ║"}
-      </InkText>
-      <InkText bold color="cyan">
+      </Text>
+      <Text bold color="cyan">
         {"╚══════════════════════════════════════════╝"}
-      </InkText>
-      <InkText> </InkText>
+      </Text>
+      <Text> </Text>
 
       {/* 1. Text */}
       <Section title="Text">
@@ -72,17 +72,18 @@ const App: React.FC = () => {
         <Text color="red" strikethrough>Strikethrough red</Text>
       </Section>
 
-      {/* 2. Box */}
-      <Section title="Box">
-        <Box borderStyle="round" borderColor="blue" padding={1}>
-          <Text color="blue">Box with round border and padding</Text>
-        </Box>
+      {/* 2. Container */}
+      <Section title="Container">
+        <Container radius="round" borderColor="blue" padding={1}>
+          <Text color="blue">Container with border radius and padding</Text>
+        </Container>
       </Section>
 
-      {/* 3. Spinner */}
-      <Section title="Spinner">
-        <Spinner label="Loading (dots)..." color="cyan" type="dots" interval={500} />
-        <InkText dimColor>  Presets: dots ⠋⠙⠹  arc ◜◠◝  circle ◐◓◑  line -\|/  bounce ⠁⠂⠄</InkText>
+      {/* 3. Separator */}
+      <Section title="Separator">
+        <Text dimmed>Above separator</Text>
+        <Separator color="magenta" />
+        <Text dimmed>Below separator</Text>
       </Section>
 
       {/* 4. Progress */}
@@ -149,24 +150,24 @@ const App: React.FC = () => {
 
       {/* 9. Alert */}
       <Section title="Alert">
-        <Alert variant="info">This is an info alert.</Alert>
-        <Alert variant="success" title="Success">Operation completed.</Alert>
-        <Alert variant="warning">Disk space running low.</Alert>
-        <Alert variant="error" title="Error">Connection failed.</Alert>
+        <Alert variant="info" radius="none">This is an info alert with square corners.</Alert>
+        <Alert variant="success" title="Success" radius="round">Operation completed.</Alert>
+        <Alert variant="warning" radius="round">Disk space running low.</Alert>
+        <Alert variant="error" title="Error" radius="none">Connection failed.</Alert>
       </Section>
 
       {/* 10. Card */}
       <Section title="Card">
-        <Card title="System Info" footer="Updated just now" borderColor="cyan">
+        <Card title="System Info" footer="Updated just now" borderColor="cyan" radius="round">
           <Text>CPU Usage: 42%</Text>
           <Text>Memory: 3.2 GB / 16 GB</Text>
           <Text>Uptime: 5 days</Text>
         </Card>
       </Section>
 
-      <InkText> </InkText>
-      <InkText dimColor>Press q or Ctrl+C to exit</InkText>
-    </InkBox>
+      <Text> </Text>
+      <Text dimmed>Press q or Ctrl+C to exit</Text>
+    </Container>
   )
 }
 

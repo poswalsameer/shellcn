@@ -4,8 +4,11 @@ import { Box as InkBox } from "ink"
 /** Border style options. */
 type BorderStyle = "single" | "double" | "round" | "bold" | "singleDouble" | "doubleSingle" | "classic"
 
-/** Props for the Box component. */
-export interface BoxProps {
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
+/** Props for the Container component. */
+export interface ContainerProps {
   /** Content inside the box. */
   children?: React.ReactNode
   /** Width of the box. Can be a number (columns) or a percentage string. */
@@ -18,12 +21,28 @@ export interface BoxProps {
   paddingX?: number
   /** Vertical padding (top and bottom). */
   paddingY?: number
+  /** Left padding. */
+  paddingLeft?: number
+  /** Right padding. */
+  paddingRight?: number
+  /** Top padding. */
+  paddingTop?: number
+  /** Bottom padding. */
+  paddingBottom?: number
   /** Margin on all sides. */
   margin?: number
   /** Horizontal margin. */
   marginX?: number
   /** Vertical margin. */
   marginY?: number
+  /** Left margin. */
+  marginLeft?: number
+  /** Right margin. */
+  marginRight?: number
+  /** Top margin. */
+  marginTop?: number
+  /** Bottom margin. */
+  marginBottom?: number
   /** Flex direction. */
   flexDirection?: "row" | "column" | "row-reverse" | "column-reverse"
   /** Align items along the cross axis. */
@@ -32,8 +51,13 @@ export interface BoxProps {
   justifyContent?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around"
   /** Gap between children. */
   gap?: number
-  /** Show border around the box. */
+  /** Show border around the container. */
   borderStyle?: BorderStyle
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
   /** Border color. */
   borderColor?: string
 }
@@ -44,45 +68,58 @@ export interface BoxProps {
  *
  * @example
  * ```tsx
- * <Box padding={1} borderStyle="round" borderColor="cyan">
+ * <Container padding={1} radius="round" borderColor="cyan">
  *   <Text>Hello, terminal!</Text>
- * </Box>
+ * </Container>
  * ```
  */
-export const Box: React.FC<BoxProps> = ({
+export const Container: React.FC<ContainerProps> = ({
   children,
   width,
   height,
   padding,
   paddingX,
   paddingY,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+  paddingBottom,
   margin,
   marginX,
   marginY,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginBottom,
   flexDirection = "column",
   alignItems,
   justifyContent,
   gap,
   borderStyle,
+  radius,
   borderColor,
 }) => {
+  const resolvedBorderStyle = radius
+    ? (radius === "none" ? "single" : "round")
+    : borderStyle
+
   return (
     <InkBox
       width={width}
       height={height}
-      paddingLeft={paddingX ?? padding}
-      paddingRight={paddingX ?? padding}
-      paddingTop={paddingY ?? padding}
-      paddingBottom={paddingY ?? padding}
-      marginLeft={marginX ?? margin}
-      marginRight={marginX ?? margin}
-      marginTop={marginY ?? margin}
-      marginBottom={marginY ?? margin}
+      paddingLeft={paddingLeft ?? paddingX ?? padding}
+      paddingRight={paddingRight ?? paddingX ?? padding}
+      paddingTop={paddingTop ?? paddingY ?? padding}
+      paddingBottom={paddingBottom ?? paddingY ?? padding}
+      marginLeft={marginLeft ?? marginX ?? margin}
+      marginRight={marginRight ?? marginX ?? margin}
+      marginTop={marginTop ?? marginY ?? margin}
+      marginBottom={marginBottom ?? marginY ?? margin}
       flexDirection={flexDirection}
       alignItems={alignItems}
       justifyContent={justifyContent}
       gap={gap}
-      borderStyle={borderStyle}
+      borderStyle={resolvedBorderStyle}
       borderColor={borderColor}
     >
       {children}
@@ -90,4 +127,4 @@ export const Box: React.FC<BoxProps> = ({
   )
 }
 
-export default Box
+export default Container

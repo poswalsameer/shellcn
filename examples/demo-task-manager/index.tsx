@@ -1,9 +1,9 @@
+import { render, useApp, useInput } from "ink"
 import React, { useState, useEffect } from "react"
-import { render, Box as InkBox, Text as InkText, useApp, useInput } from "ink"
 
 // Import shellcn components from the registry
 import { Text } from "../../packages/registry/components/text.js"
-import { Box } from "../../packages/registry/components/box.js"
+import { Container } from "../../packages/registry/components/container.js"
 import { Checkbox, type CheckboxItem } from "../../packages/registry/components/checkbox.js"
 import { Progress } from "../../packages/registry/components/progress.js"
 import { Alert } from "../../packages/registry/components/alert.js"
@@ -22,7 +22,7 @@ import { Card } from "../../packages/registry/components/card.js"
 const INITIAL_TASKS: CheckboxItem[] = [
   { label: "Set up project scaffolding", value: "scaffold", checked: true },
   { label: "Design component API", value: "api", checked: true },
-  { label: "Implement Spinner component", value: "spinner", checked: true },
+  { label: "Implement Separator component", value: "separator", checked: true },
   { label: "Implement Table component", value: "table", checked: false },
   { label: "Write documentation", value: "docs", checked: false },
   { label: "Add unit tests", value: "tests", checked: false },
@@ -68,13 +68,15 @@ const TaskManagerApp: React.FC = () => {
   }
 
   return (
-    <InkBox flexDirection="column" padding={1}>
+    <Container flexDirection="column" padding={1}>
       {/* Header */}
-      <Box borderStyle="double" borderColor="magenta" padding={1} paddingY={0}>
-        <Text color="magenta" bold>shellcn Task Manager Demo</Text>
-      </Box>
+      <Container borderStyle="double" borderColor="magenta" padding={1} paddingY={0}>
+        <Text color="magenta" bold>
+          Task Manager Demo
+        </Text>
+      </Container>
 
-      <InkText> </InkText>
+      <Text> </Text>
 
       {/* Progress overview */}
       <Card title="Progress" borderColor="cyan" titleColor="cyan">
@@ -86,7 +88,7 @@ const TaskManagerApp: React.FC = () => {
         />
       </Card>
 
-      <InkText> </InkText>
+      <Text> </Text>
 
       {/* Task list */}
       <Card title="Tasks" borderColor="white">
@@ -98,7 +100,7 @@ const TaskManagerApp: React.FC = () => {
         />
       </Card>
 
-      <InkText> </InkText>
+      <Text> </Text>
 
       {/* Feedback */}
       {lastAction && (
@@ -111,16 +113,16 @@ const TaskManagerApp: React.FC = () => {
       )}
 
       {progressValue === 1 && (
-        <InkBox marginTop={1}>
+        <Container marginTop={1}>
           <Alert variant="success">
             🎉 All tasks completed! Great work!
           </Alert>
-        </InkBox>
+        </Container>
       )}
 
-      <InkText> </InkText>
-      <InkText dimColor>Press q to quit</InkText>
-    </InkBox>
+      <Text> </Text>
+      <Text dimmed>Press q to quit</Text>
+    </Container>
   )
 }
 

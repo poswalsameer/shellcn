@@ -1,6 +1,9 @@
 import React, { useState } from "react"
 import { Text, Box, useInput } from "ink"
 
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
 /** Props for the Input component. */
 export interface InputProps {
   /** Placeholder text shown when value is empty. */
@@ -21,6 +24,11 @@ export interface InputProps {
   mask?: string
   /** Whether the input is focused and accepting keystrokes. */
   focus?: boolean
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
 }
 
 /**
@@ -49,6 +57,7 @@ export const Input: React.FC<InputProps> = ({
   placeholderColor = "gray",
   mask,
   focus = true,
+  radius = "round",
 }) => {
   const [internalValue, setInternalValue] = useState("")
   const value = controlledValue ?? internalValue
@@ -84,13 +93,37 @@ export const Input: React.FC<InputProps> = ({
   const displayValue = mask ? mask.repeat(value.length) : value
   const isEmpty = value.length === 0
 
+  const resolvedBorderStyle = radius === "none" ? "single" : "round"
+  const resolvedBorderColor = focus ? "cyan" : "gray"
+
   return (
-    <Box flexDirection="row" gap={1}>
-      {label && <Text bold>{label}</Text>}
-      <Text color={isEmpty ? placeholderColor : color}>
-        {isEmpty ? placeholder : displayValue}
-      </Text>
-      {focus && <Text color="cyan">▋</Text>}
+    <Box
+      flexDirection="row"
+      borderStyle={resolvedBorderStyle}
+      borderColor={resolvedBorderColor}
+    >
+      {label && (
+        <Box
+          borderStyle="single"
+          borderTop={false}
+          borderBottom={false}
+          borderLeft={false}
+          borderRight={true}
+          borderColor={resolvedBorderColor}
+          paddingLeft={1}
+          paddingRight={1}
+        >
+          <Text bold color={resolvedBorderColor}>
+            {label}
+          </Text>
+        </Box>
+      )}
+      <Box paddingLeft={1} paddingRight={1} flexDirection="row" gap={1}>
+        <Text color={isEmpty ? placeholderColor : color}>
+          {isEmpty ? placeholder : displayValue}
+        </Text>
+        {focus && <Text color="cyan">▋</Text>}
+      </Box>
     </Box>
   )
 }

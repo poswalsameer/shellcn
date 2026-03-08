@@ -12,6 +12,9 @@ const VARIANT_CONFIG: Record<AlertVariant, { icon: string; color: string }> = {
   error: { icon: "✗", color: "red" },
 }
 
+/** Border radius options mapping to terminal box styles. */
+export type Radius = "none" | "round"
+
 /** Props for the Alert component. */
 export interface AlertProps {
   /** Content of the alert. */
@@ -22,7 +25,12 @@ export interface AlertProps {
   title?: string
   /** Custom icon to override the variant's default icon. */
   icon?: string
-  /** Border style for the alert box. */
+  /**
+   * Border radius. Maps to terminal box styles.
+   * "none" uses square corners, others use rounded corners.
+   */
+  radius?: Radius
+  /** Optional manual override for border style. */
   borderStyle?: "single" | "double" | "round" | "bold" | "classic"
 }
 
@@ -36,7 +44,7 @@ export interface AlertProps {
  *   All tasks completed successfully.
  * </Alert>
  *
- * <Alert variant="error">Something went wrong.</Alert>
+ * <Alert variant="error" radius="none">Something went wrong.</Alert>
  * ```
  */
 export const Alert: React.FC<AlertProps> = ({
@@ -44,14 +52,19 @@ export const Alert: React.FC<AlertProps> = ({
   variant = "info",
   title,
   icon: customIcon,
-  borderStyle = "round",
+  radius,
+  borderStyle,
 }) => {
   const config = VARIANT_CONFIG[variant]
   const icon = customIcon ?? config.icon
 
+  const resolvedBorderStyle = radius
+    ? (radius === "none" ? "single" : "round")
+    : (borderStyle ?? "round")
+
   return (
     <Box
-      borderStyle={borderStyle}
+      borderStyle={resolvedBorderStyle}
       borderColor={config.color}
       paddingLeft={1}
       paddingRight={1}
