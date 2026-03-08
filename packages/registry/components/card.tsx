@@ -1,91 +1,90 @@
 import React from "react"
-import { Text, Box } from "ink"
+import { Text, type TextProps } from "./text.js"
+import { Container, type ContainerProps } from "./container.js"
 
 /** Border radius options mapping to terminal box styles. */
 export type Radius = "none" | "round"
 
 /** Props for the Card component. */
-export interface CardProps {
+export interface CardProps extends ContainerProps {
   /** Content of the card body. */
   children: React.ReactNode
-  /** Title displayed at the top of the card. */
-  title?: string
-  /** Footer text displayed at the bottom of the card. */
-  footer?: string
-  /** Width of the card. */
-  width?: number | string
   /**
    * Border radius. Maps to terminal box styles.
    * "none" uses square corners, others use rounded corners.
    */
   radius?: Radius
-  /** Optional manual override for border style. */
-  borderStyle?: "single" | "double" | "round" | "bold" | "classic"
-  /** Border color. */
-  borderColor?: string
-  /** Title text color. */
-  titleColor?: string
-  /** Footer text color. */
-  footerColor?: string
-  /** Padding inside the card. */
-  padding?: number
 }
 
 /**
  * Card container component.
- * A bordered container with optional title and footer sections.
+ * A bordered container meant to compose with CardTitle and CardFooter.
  *
  * @example
  * ```tsx
- * <Card title="System Info" footer="Last updated: now" borderColor="cyan" radius="round">
+ * <Card borderColor="cyan" radius="round">
+ *   <CardTitle color="cyan">System Info</CardTitle>
  *   <Text>CPU: 45%</Text>
  *   <Text>Memory: 2.1 GB</Text>
+ *   <CardFooter>Last updated: now</CardFooter>
  * </Card>
  * ```
  */
 export const Card: React.FC<CardProps> = ({
   children,
-  title,
-  footer,
-  width,
-  radius,
-  borderStyle,
+  radius = "round",
   borderColor = "white",
-  titleColor = "white",
-  footerColor = "gray",
-  padding = 1,
+  paddingX = 1,
+  ...props
 }) => {
-  const resolvedBorderStyle = radius
-    ? (radius === "none" ? "single" : "round")
-    : (borderStyle ?? "round")
-
   return (
-    <Box
+    <Container
       flexDirection="column"
-      borderStyle={resolvedBorderStyle}
+      radius={radius}
       borderColor={borderColor}
-      width={width}
-      paddingLeft={padding}
-      paddingRight={padding}
+      paddingX={paddingX}
+      {...props}
     >
-      {title && (
-        <Box marginBottom={1}>
-          <Text color={titleColor} bold>
-            {title}
-          </Text>
-        </Box>
-      )}
+      {children}
+    </Container>
+  )
+}
 
-      <Box flexDirection="column">{children}</Box>
+/** Props for CardTitle, extending Text properties. */
+export interface CardTitleProps extends Omit<TextProps, "children"> {
+  children?: React.ReactNode
+}
 
-      {footer && (
-        <Box marginTop={1}>
-          <Text color={footerColor} dimColor>
-            {footer}
-          </Text>
-        </Box>
-      )}
-    </Box>
+/**
+ * Card Title component.
+ * Renders bold text with a bottom margin.
+ */
+export const CardTitle: React.FC<CardTitleProps> = ({ children, ...props }) => {
+  return (
+    <Container marginBottom={1}>
+      <Text bold color="white" {...props}>
+        {children}
+      </Text>
+    </Container>
+  )
+}
+
+/** Props for CardFooter, extending Text properties. */
+export interface CardFooterProps extends Omit<TextProps, "children"> {
+  children?: React.ReactNode
+}
+
+/**
+ * Card Footer component.
+ * Renders dimmed text with a top margin.
+ */
+export const CardFooter: React.FC<CardFooterProps> = ({ children, ...props }) => {
+  return (
+    <Container marginTop={1}>
+      <Text dimmed {...props}>
+        {children}
+      </Text>
+    </Container>
   )
 }
 

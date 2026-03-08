@@ -1,15 +1,16 @@
 import React from "react"
-import { Text, Box } from "ink"
+import { Text } from "./text.js"
+import { Container } from "./container.js"
 
 /** Alert variant types. */
-type AlertVariant = "info" | "success" | "warning" | "error"
+export type AlertVariant = "info" | "success" | "warning" | "error"
 
-/** Icon and color configuration per variant. */
-const VARIANT_CONFIG: Record<AlertVariant, { icon: string; color: string }> = {
-  info: { icon: "ℹ", color: "blue" },
-  success: { icon: "✓", color: "green" },
-  warning: { icon: "⚠", color: "yellow" },
-  error: { icon: "✗", color: "red" },
+/** Color configuration per variant. */
+const VARIANT_COLORS: Record<AlertVariant, string> = {
+  info: "blue",
+  success: "green",
+  warning: "yellow",
+  error: "red",
 }
 
 /** Border radius options mapping to terminal box styles. */
@@ -23,8 +24,6 @@ export interface AlertProps {
   variant?: AlertVariant
   /** Optional title displayed in bold above the message. */
   title?: string
-  /** Custom icon to override the variant's default icon. */
-  icon?: string
   /**
    * Border radius. Maps to terminal box styles.
    * "none" uses square corners, others use rounded corners.
@@ -32,6 +31,16 @@ export interface AlertProps {
   radius?: Radius
   /** Optional manual override for border style. */
   borderStyle?: "single" | "double" | "round" | "bold" | "classic"
+  /** Custom text color override. Defaults to the variant's color. */
+  color?: string
+  /** Custom border color override. Defaults to the variant's color. */
+  borderColor?: string
+  /** Flex direction. Defaults to "column". */
+  flexDirection?: "row" | "column" | "row-reverse" | "column-reverse"
+  /** Align items along the cross axis. */
+  alignItems?: "flex-start" | "flex-end" | "center" | "stretch"
+  /** Justify content along the main axis. */
+  justifyContent?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around"
 }
 
 /**
@@ -51,35 +60,35 @@ export const Alert: React.FC<AlertProps> = ({
   children,
   variant = "info",
   title,
-  icon: customIcon,
   radius,
   borderStyle,
+  color,
+  borderColor,
+  flexDirection = "column",
+  alignItems,
+  justifyContent,
 }) => {
-  const config = VARIANT_CONFIG[variant]
-  const icon = customIcon ?? config.icon
-
-  const resolvedBorderStyle = radius
-    ? (radius === "none" ? "single" : "round")
-    : (borderStyle ?? "round")
+  const defaultColor = VARIANT_COLORS[variant]
+  const resolvedColor = color ?? defaultColor
+  const resolvedBorderColor = borderColor ?? defaultColor
 
   return (
-    <Box
-      borderStyle={resolvedBorderStyle}
-      borderColor={config.color}
-      paddingLeft={1}
-      paddingRight={1}
-      flexDirection="column"
+    <Container
+      borderStyle={borderStyle}
+      radius={radius ?? "round"}
+      borderColor={resolvedBorderColor}
+      paddingX={1}
+      flexDirection={flexDirection}
+      alignItems={alignItems}
+      justifyContent={justifyContent}
     >
       {title ? (
-        <Text color={config.color} bold>
-          {icon} {title}
+        <Text color={resolvedColor} bold>
+          {title}
         </Text>
       ) : null}
-      <Box flexDirection="row" gap={1}>
-        {!title && <Text color={config.color}>{icon}</Text>}
-        <Text>{children}</Text>
-      </Box>
-    </Box>
+      <Text color={resolvedColor}>{children}</Text>
+    </Container>
   )
 }
 

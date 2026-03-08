@@ -484,18 +484,18 @@ const [name, setName] = useState("")
 
 ### `components/alert.tsx` — Alert Box
 
-**Purpose:** Display info/success/warning/error messages with icons.
+**Purpose:** Display info/success/warning/error messages intuitively.
 
 **How it works:**
 
-- Has 4 variants, each with a preset icon and color:
-  - `info` → ℹ blue
-  - `success` → ✓ green
-  - `warning` → ⚠ yellow
-  - `error` → ✗ red
-- Wraps content in a bordered `<Box>` with the variant's border color
+- Has 4 variants, each with a preset color styling for the text and borders:
+  - `info` → blue
+  - `success` → green
+  - `warning` → yellow
+  - `error` → red
+- Wraps content in a bordered `<Container>`
 - Optional `title` shown in bold above the message
-- Custom icons can override the defaults
+- Completely overrides capable: custom `color`, `borderColor` and flex attributes.
 
 **Example usage:**
 
@@ -509,20 +509,23 @@ const [name, setName] = useState("")
 
 ### `components/card.tsx` — Card Container
 
-**Purpose:** A bordered container with optional title and footer.
+**Purpose:** A bordered container meant to compose with a `CardTitle` and `CardFooter`.
 
 **How it works:**
 
-- Takes `children` (the card body content)
-- Optional `title` rendered in bold at the top with a margin below
-- Optional `footer` rendered dimmed at the bottom with a margin above
-- Customizable border style, border color, padding
+- Uses the composition pattern (like React components structure).
+- Takes `children` (the card body content).
+- `<CardTitle>` rendered in bold at the top with a bottom margin. Extends `Text` props so it scales perfectly with colors.
+- `<CardFooter>` rendered dimmed at the bottom with a top margin. Extends `Text` props.
+- Completely delegates its wrapper sizing to `ContainerProps`.
 
 **Example usage:**
 
 ```tsx
-<Card title="System Info" footer="Updated just now" borderColor="cyan">
+<Card borderColor="cyan">
+  <CardTitle color="white">System Info</CardTitle>
   <Text>CPU: 45%</Text>
+  <CardFooter>Updated just now</CardFooter>
 </Card>
 ```
 

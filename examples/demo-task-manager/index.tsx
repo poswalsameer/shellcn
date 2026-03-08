@@ -7,7 +7,7 @@ import { Container } from "../../packages/registry/components/container.js"
 import { Checkbox, type CheckboxItem } from "../../packages/registry/components/checkbox.js"
 import { Progress } from "../../packages/registry/components/progress.js"
 import { Alert } from "../../packages/registry/components/alert.js"
-import { Card } from "../../packages/registry/components/card.js"
+import { Card, CardTitle } from "../../packages/registry/components/card.js"
 
 /**
  * Demo Task Manager Application
@@ -79,7 +79,8 @@ const TaskManagerApp: React.FC = () => {
       <Text> </Text>
 
       {/* Progress overview */}
-      <Card title="Progress" borderColor="cyan" titleColor="cyan">
+      <Card borderColor="cyan">
+        <CardTitle color="cyan">Progress</CardTitle>
         <Progress
           value={progressValue}
           color={progressValue === 1 ? "green" : "cyan"}
@@ -91,7 +92,8 @@ const TaskManagerApp: React.FC = () => {
       <Text> </Text>
 
       {/* Task list */}
-      <Card title="Tasks" borderColor="white">
+      <Card borderColor="white">
+        <CardTitle>Tasks</CardTitle>
         <Checkbox
           items={tasks}
           onChange={handleChange}

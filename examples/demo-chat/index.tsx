@@ -4,7 +4,7 @@ import { render, useApp, useInput } from "ink"
 // Import shellcn components from the registry
 import { Text } from "../../packages/registry/components/text.js"
 import { Container } from "../../packages/registry/components/container.js"
-import { Card } from "../../packages/registry/components/card.js"
+import { Card, CardTitle } from "../../packages/registry/components/card.js"
 
 import { Input } from "../../packages/registry/components/input.js"
 
@@ -88,8 +88,11 @@ const ChatApp: React.FC = () => {
           )}
           <Card
             borderColor={msg.role === "user" ? "gray" : "green"}
-            padding={1}
+            paddingX={1}
           >
+            {msg.role !== "assistant" && (
+              <CardTitle color="gray">You</CardTitle>
+            )}
             <Text color={msg.role === "user" ? "cyan" : "white"}>
               {msg.content}
             </Text>

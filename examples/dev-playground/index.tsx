@@ -21,7 +21,7 @@ import { Input } from "../../packages/registry/components/input.js"
 import { Select } from "../../packages/registry/components/select.js"
 import { Checkbox } from "../../packages/registry/components/checkbox.js"
 import { Alert } from "../../packages/registry/components/alert.js"
-import { Card } from "../../packages/registry/components/card.js"
+import { Card, CardTitle, CardFooter } from "../../packages/registry/components/card.js"
 
 /** Section wrapper that labels each component preview. */
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
@@ -152,16 +152,20 @@ const App: React.FC = () => {
       <Section title="Alert">
         <Alert variant="info" radius="none">This is an info alert with square corners.</Alert>
         <Alert variant="success" title="Success" radius="round">Operation completed.</Alert>
-        <Alert variant="warning" radius="round">Disk space running low.</Alert>
-        <Alert variant="error" title="Error" radius="none">Connection failed.</Alert>
+        <Alert variant="warning" radius="round" alignItems="center">Center aligned warning.</Alert>
+        <Alert variant="error" title="Critical Error" borderColor="magenta" color="white" radius="none">
+          Connection failed. (Custom colored)
+        </Alert>
       </Section>
 
       {/* 10. Card */}
       <Section title="Card">
-        <Card title="System Info" footer="Updated just now" borderColor="cyan" radius="round">
+        <Card borderColor="cyan" radius="round">
+          <CardTitle color="white">System Info</CardTitle>
           <Text>CPU Usage: 42%</Text>
           <Text>Memory: 3.2 GB / 16 GB</Text>
           <Text>Uptime: 5 days</Text>
+          <CardFooter>Updated just now</CardFooter>
         </Card>
       </Section>
 
