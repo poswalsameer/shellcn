@@ -1,7 +1,7 @@
-import fs from "fs-extra"
-import path from "path"
-import { fileURLToPath } from "url"
 import { REGISTRY_FILE_NAME } from "../config/defaults.js"
+
+/** URL to the raw GitHub repository registry. */
+export const REGISTRY_BASE_URL = "https://raw.githubusercontent.com/poswalsameer/shellcn/main/packages/registry"
 
 /** A single component entry from the registry manifest. */
 export interface ComponentEntry {
@@ -19,37 +19,26 @@ export interface ComponentRegistry {
 }
 
 /**
- * Resolves the absolute path to the bundled registry directory.
- * The registry lives at `packages/registry/` relative to the CLI package root.
- *
- * When bundled by tsup, the output is at packages/cli/dist/index.js.
- * So we navigate: dist/ → cli/ (1 up) → packages/registry/ (1 up + "registry").
- */
-function getRegistryDir(): string {
-  const currentFile = fileURLToPath(import.meta.url)
-  const currentDir = path.dirname(currentFile)
-  // From packages/cli/dist/ → packages/cli/ → packages/ → packages/registry/
-  const packagesDir = path.resolve(currentDir, "..", "..")
-  return path.resolve(packagesDir, "registry")
-}
-
-/**
- * Loads and parses the component registry manifest.
- * Reads from the bundled registry directory.
+ * Loads and parses the component registry manifest remotely.
+ * Fetches directly from the GitHub repository.
  */
 export async function loadRegistry(): Promise<ComponentRegistry> {
-  const registryDir = getRegistryDir()
-  const manifestPath = path.join(registryDir, REGISTRY_FILE_NAME)
+  const manifestUrl = `${REGISTRY_BASE_URL}/${REGISTRY_FILE_NAME}`
 
-  if (!fs.existsSync(manifestPath)) {
+  try {
+    const response = await fetch(manifestUrl)
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch registry manifest: HTTP ${response.status}`)
+    }
+
+    return (await response.json()) as ComponentRegistry
+  } catch (error) {
     throw new Error(
-      `Registry manifest not found at ${manifestPath}. ` +
-      `Make sure the registry package is available.`
+      `Could not load registry manifest from ${manifestUrl}. ` +
+      `Make sure you have an active internet connection.`
     )
   }
-
-  const raw = await fs.readJSON(manifestPath)
-  return raw as ComponentRegistry
 }
 
 /**
@@ -72,9 +61,10 @@ export async function listComponents(): Promise<string[]> {
 }
 
 /**
- * Resolves the absolute file path for a component template in the registry.
+ * Resolves the remote URL for a component template.
  */
 export function resolveComponentPath(componentPath: string): string {
-  const registryDir = getRegistryDir()
-  return path.join(registryDir, componentPath)
+  // Prevent double slashes when joining the URL
+  const normalizedPath = componentPath.startsWith("/") ? componentPath.slice(1) : componentPath
+  return `${REGISTRY_BASE_URL}/${normalizedPath}`
 }

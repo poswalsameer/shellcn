@@ -181,7 +181,7 @@ Key functions:
    - Returns an array of all component names
 
 5. **`resolveComponentPath(componentPath)`**
-   - Converts a relative registry path (e.g., `"components/separator.tsx"`) to an absolute file path
+   - Converts a relative registry path to the full absolute URL on GitHub where the raw file resides.
 
 ---
 
@@ -223,9 +223,9 @@ Two functions:
 
 1. Reads the project config (ensures shellcn is initialized)
 2. Looks up `"separator"` in the registry
-3. If the component doesn't exist in the registry → error message
+3. If the component doesn't exist in the JSON manifest → error message
 4. If the component file already exists in the user's project → asks "Overwrite? [y/N]"
-5. Copies the component template into `src/components/shellcn/separator.tsx`
+5. _Fetches the component file content directly from the GitHub repository_ and writes it into `src/components/shellcn/separator.tsx`
 6. Prints success message and any extra dependencies needed
 
 The `confirm()` helper function creates a simple yes/no prompt using Node's `readline` module.
@@ -266,7 +266,7 @@ program.parse()
 
 ## Component Registry — `packages/registry/`
 
-This is the **library of component templates**. When a user runs `shellcn add separator`, the CLI reads from this folder and copies the component into their project.
+This is the **library of component templates**. When a user runs `shellcn add separator`, the CLI reaches out directly to the `shellcn` repository on GitHub and fetches the raw component file into their project.
 
 ### `packages/registry/components.json` — The Manifest
 
