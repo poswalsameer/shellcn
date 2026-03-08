@@ -14,6 +14,9 @@ export interface CheckboxItem {
 /** Border radius options mapping to terminal box styles. */
 export type Radius = "none" | "round"
 
+/** Checkbox shape visual style. */
+export type Variant = "rounded" | "square"
+
 /** Props for the Checkbox component. */
 export interface CheckboxProps {
   /** List of items to display. */
@@ -24,12 +27,16 @@ export interface CheckboxProps {
   onSubmit?: (selectedItems: CheckboxItem[]) => void
   /** Label text displayed above the checkbox list. */
   label?: string
+  /** Color of the label text. */
+  labelColor?: string
+  /** Color of the border. */
+  borderColor?: string
+  /** Color of the unhighlighted item text. */
+  textColor?: string
   /** Color of the highlighted/focused item. */
   highlightColor?: string
-  /** Character for checked state. */
-  checkedChar?: string
-  /** Character for unchecked state. */
-  uncheckedChar?: string
+  /** Checkbox visual style (rounded or square). */
+  variant?: Variant
   /** Whether the checkbox is focused and accepting input. */
   focus?: boolean
   /**
@@ -61,11 +68,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   onSubmit,
   label,
+  labelColor,
+  borderColor,
+  textColor,
   highlightColor = "cyan",
-  checkedChar = "◉",
-  uncheckedChar = "○",
+  variant = "square",
   focus = true,
-  radius = "round",
+  radius = "none",
 }) => {
   const [items, setItems] = useState<CheckboxItem[]>(
     initialItems.map((item) => ({ ...item, checked: item.checked ?? false }))
@@ -105,8 +114,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     { isActive: focus }
   )
 
+  const isRounded = variant === "rounded"
+  const checkedChar = isRounded ? "◉" : "☑"
+  const uncheckedChar = isRounded ? "○" : "☐"
+
   const resolvedBorderStyle = radius === "none" ? "single" : "round"
-  const resolvedBorderColor = focus ? highlightColor : "gray"
+  const resolvedBorderColor = borderColor ?? (focus ? highlightColor : "gray")
 
   return (
     <Box
@@ -125,7 +138,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           paddingLeft={1}
           paddingRight={1}
         >
-          <Text bold color={resolvedBorderColor}>
+          <Text bold color={labelColor ?? resolvedBorderColor}>
             {label}
           </Text>
         </Box>
@@ -135,11 +148,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           const isFocused = index === focusIndex
           return (
             <Box key={item.value} flexDirection="row" gap={1}>
-              <Text color={item.checked ? "green" : "gray"}>
+              <Text color={item.checked ? highlightColor : "gray"}>
                 {item.checked ? checkedChar : uncheckedChar}
               </Text>
               <Text
-                color={isFocused ? highlightColor : undefined}
+                color={isFocused ? highlightColor : textColor}
                 bold={isFocused}
               >
                 {item.label}

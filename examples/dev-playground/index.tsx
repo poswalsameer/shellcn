@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { render, useApp } from "ink"
+import { render, useApp, useInput } from "ink"
 
 /**
  * Dev Playground — Live Component Preview
@@ -43,40 +43,47 @@ const App: React.FC = () => {
   const { exit } = useApp()
   const [inputValue, setInputValue] = useState("")
 
+  // Global input handler to keep the playground alive and allow exiting
+  useInput((input, key) => {
+    if (input === "q" || (key.ctrl && input === "c")) {
+      exit()
+    }
+  })
+
   return (
     <Container flexDirection="column" padding={1} gap={2}>
       {/* 1. Text */}
-      <Section title="• TEXT">
-        <Text color="green" bold>Bold green text</Text>
+      {/* <Section title="• TEXT">
+        <Text color="cyan">Bold green text</Text>
         <Text dimmed>Dimmed text</Text>
         <Text color="yellow" underline>Underlined yellow</Text>
         <Text color="red" strikethrough>Strikethrough red</Text>
-      </Section>
+      </Section> */}
 
       {/* 2. Container */}
-      <Section title="• CONTAINER">
-        <Container radius="round" borderColor="blue" padding={1}>
-          <Text color="blue">Container with border radius and padding</Text>
+      {/* <Section title="• CONTAINER">
+        <Container flexDirection="row" justifyContent="center" radius="none" borderColor="white" padding={1}>
+          <Text color="yellow">Container with border radius and padding</Text>
         </Container>
-      </Section>
+      </Section> */}
 
       {/* 3. Separator */}
-      <Section title="• SEPARATOR">
-        <Text dimmed>Above separator</Text>
-        <Separator color="magenta" />
-        <Text dimmed>Below separator</Text>
-      </Section>
+      {/* <Section title="• SEPARATOR">
+        <Text>Above separator</Text>
+        <Separator color="yellow" />
+        <Text>Below separator</Text>
+      </Section> */}
 
       {/* 4. Progress */}
-      <Section title="• PROGRESS">
-        <Progress value={0.35} color="yellow" showPercentage label="Build:" />
-        <Progress value={0.68} color="cyan" showPercentage label="Test: " />
-        <Progress value={1.0} color="green" showPercentage label="Lint: " />
-        <Progress value={0.5} color="blue" fillChar="▓" emptyChar="░" label="Upload:" showPercentage />
-      </Section>
+      {/* <Section title="• PROGRESS">
+        <Container flexDirection="row" gap={1}>
+          <Container width="12"><Text>Build:</Text></Container>
+          <Progress value={0.35} color="yellow" showPercentage />
+        </Container>
+      </Section> */}
 
       {/* 5. Table */}
-      <Section title="• TABLE">
+      {/* <Section title="• TABLE">
         <Table
           columns={[
             { header: "Name", accessor: "name", width: 15 },
@@ -88,23 +95,28 @@ const App: React.FC = () => {
             { name: "Bob", role: "Designer", status: "Away" },
             { name: "Charlie", role: "PM", status: "Active" },
           ]}
+          cellColor="yellow"
           headerColor="cyan"
+          borderColor="red"
         />
-      </Section>
+      </Section> */}
 
-      {/* 6. Input */}
-      <Section title="• INPUT">
+      {/* INPUT */}
+      {/* <Section title="• INPUT">
         <Input
           label="Name:"
           placeholder="Type something..."
           value={inputValue}
           onChange={setInputValue}
-          focus={false}
+          focus={true}
+          borderColor="white"
+          textColor="yellow"
+          labelColor="white"
         />
-      </Section>
+      </Section> */}
 
       {/* 7. Select */}
-      <Section title="• SELECT">
+      {/* <Section title="• SELECT">
         <Select
           label="Pick a framework:"
           options={[
@@ -113,11 +125,16 @@ const App: React.FC = () => {
             { label: "Svelte", value: "svelte" },
           ]}
           focus={false}
+          labelColor="magenta"
+          borderColor="white"
+          textColor="gray"
+          highlightColor="yellow"
+          indicator="▶"
         />
-      </Section>
+      </Section> */}
 
       {/* 8. Checkbox */}
-      <Section title="• CHECKBOX">
+      {/* <Section title="• CHECKBOX">
         <Checkbox
           label="Select features:"
           items={[
@@ -125,23 +142,28 @@ const App: React.FC = () => {
             { label: "ESLint", value: "eslint" },
             { label: "Prettier", value: "prettier", checked: true },
           ]}
-          focus={false}
+          focus={true}
+          variant="square"
+          labelColor="yellow"
+          borderColor="white"
+          textColor="white"
+          highlightColor="yellow"
         />
-      </Section>
+      </Section> */}
 
       {/* 9. Alert */}
-      <Section title="• ALERT">
+      {/* <Section title="• ALERT">
         <Alert variant="info" radius="none">This is an info alert with square corners.</Alert>
         <Alert variant="success" title="Success" radius="round">Operation completed.</Alert>
         <Alert variant="warning" radius="round" alignItems="center">Center aligned warning.</Alert>
         <Alert variant="error" title="Critical Error" borderColor="magenta" color="white" radius="none">
           Connection failed. (Custom colored)
         </Alert>
-      </Section>
+      </Section> */}
 
       {/* 10. Card */}
       <Section title="• CARD">
-        <Card borderColor="cyan" radius="round">
+        <Card borderColor="cyan">
           <CardTitle color="white">System Info</CardTitle>
           <Text>CPU Usage: 42%</Text>
           <Text>Memory: 3.2 GB / 16 GB</Text>

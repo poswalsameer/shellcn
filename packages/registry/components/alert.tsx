@@ -60,7 +60,7 @@ export const Alert: React.FC<AlertProps> = ({
   children,
   variant = "info",
   title,
-  radius,
+  radius = "none",
   borderStyle,
   color,
   borderColor,
@@ -75,7 +75,7 @@ export const Alert: React.FC<AlertProps> = ({
   return (
     <Container
       borderStyle={borderStyle}
-      radius={radius ?? "round"}
+      radius={radius}
       borderColor={resolvedBorderColor}
       paddingX={1}
       flexDirection={flexDirection}

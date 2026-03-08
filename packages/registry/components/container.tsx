@@ -1,5 +1,5 @@
 import React from "react"
-import { Box as InkBox } from "ink"
+import { Box } from "ink"
 
 /** Border style options. */
 type BorderStyle = "single" | "double" | "round" | "bold" | "singleDouble" | "doubleSingle" | "classic"
@@ -53,8 +53,7 @@ export interface ContainerProps {
   gap?: number
   /** Show border around the container. */
   borderStyle?: BorderStyle
-  /**
-   * Border radius. Maps to terminal box styles.
+  /** Border radius. Maps to terminal box styles.
    * "none" uses square corners, others use rounded corners.
    */
   radius?: Radius
@@ -104,7 +103,7 @@ export const Container: React.FC<ContainerProps> = ({
     : borderStyle
 
   return (
-    <InkBox
+    <Box
       width={width}
       height={height}
       paddingLeft={paddingLeft ?? paddingX ?? padding}
@@ -123,7 +122,7 @@ export const Container: React.FC<ContainerProps> = ({
       borderColor={borderColor}
     >
       {children}
-    </InkBox>
+    </Box>
   )
 }
 

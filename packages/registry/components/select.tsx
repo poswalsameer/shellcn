@@ -22,6 +22,12 @@ export interface SelectProps {
   onChange?: (option: SelectOption) => void
   /** Label text displayed above the options. */
   label?: string
+  /** Color of the label text. */
+  labelColor?: string
+  /** Color of the border. */
+  borderColor?: string
+  /** Color of the unhighlighted option text. */
+  textColor?: string
   /** Color of the highlighted option. */
   highlightColor?: string
   /** Indicator character for the selected item. */
@@ -59,11 +65,14 @@ export const Select: React.FC<SelectProps> = ({
   onSelect,
   onChange,
   label,
+  labelColor,
+  borderColor,
+  textColor,
   highlightColor = "cyan",
   indicator = "❯",
   initialIndex = 0,
   focus = true,
-  radius = "round",
+  radius = "none",
 }) => {
   const [highlightedIndex, setHighlightedIndex] = useState(initialIndex)
 
@@ -94,7 +103,7 @@ export const Select: React.FC<SelectProps> = ({
   )
 
   const resolvedBorderStyle = radius === "none" ? "single" : "round"
-  const resolvedBorderColor = focus ? highlightColor : "gray"
+  const resolvedBorderColor = borderColor ?? (focus ? highlightColor : "gray")
 
   return (
     <Box
@@ -113,7 +122,7 @@ export const Select: React.FC<SelectProps> = ({
           paddingLeft={1}
           paddingRight={1}
         >
-          <Text bold color={resolvedBorderColor}>
+          <Text bold color={labelColor ?? resolvedBorderColor}>
             {label}
           </Text>
         </Box>
@@ -123,11 +132,11 @@ export const Select: React.FC<SelectProps> = ({
           const isHighlighted = index === highlightedIndex
           return (
             <Box key={option.value} flexDirection="row" gap={1}>
-              <Text color={isHighlighted ? highlightColor : undefined}>
+              <Text color={isHighlighted ? highlightColor : textColor}>
                 {isHighlighted ? indicator : " "}
               </Text>
               <Text
-                color={isHighlighted ? highlightColor : undefined}
+                color={isHighlighted ? highlightColor : textColor}
                 bold={isHighlighted}
               >
                 {option.label}

@@ -17,8 +17,8 @@ export interface ProgressProps {
   emptyColor?: string
   /** Show percentage label next to the bar. */
   showPercentage?: boolean
-  /** Optional label displayed before the bar. */
-  label?: string
+  /** Color of the percentage text. */
+  textColor?: string
 }
 
 /**
@@ -39,7 +39,7 @@ export const Progress: React.FC<ProgressProps> = ({
   color = "green",
   emptyColor = "gray",
   showPercentage = true,
-  label,
+  textColor = "white",
 }) => {
   // Clamp value between 0 and 1
   const clamped = Math.min(1, Math.max(0, value))
@@ -49,12 +49,11 @@ export const Progress: React.FC<ProgressProps> = ({
 
   return (
     <Box flexDirection="row" gap={1}>
-      {label && <Text>{label}</Text>}
       <Text>
         <Text color={color}>{fillChar.repeat(filled)}</Text>
         <Text color={emptyColor}>{emptyChar.repeat(empty)}</Text>
       </Text>
-      {showPercentage && <Text dimColor>{percentage}%</Text>}
+      {showPercentage && <Text color={textColor}>{percentage}%</Text>}
     </Box>
   )
 }

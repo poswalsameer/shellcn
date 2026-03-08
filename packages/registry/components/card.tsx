@@ -32,7 +32,7 @@ export interface CardProps extends ContainerProps {
  */
 export const Card: React.FC<CardProps> = ({
   children,
-  radius = "round",
+  radius = "none",
   borderColor = "white",
   paddingX = 1,
   ...props

@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Text, Box, useInput } from "ink"
+import React, { useRef, useEffect, useCallback } from "react"
+import { Text, Box, useInput, Key } from "ink"
 
 /** Border radius options mapping to terminal box styles. */
 export type Radius = "none" | "round"
@@ -16,8 +16,12 @@ export interface InputProps {
   onSubmit?: (value: string) => void
   /** Label text displayed before the input. */
   label?: string
+  /** Color of the label text. */
+  labelColor?: string
+  /** Color of the border. */
+  borderColor?: string
   /** Color of the input text. */
-  color?: string
+  textColor?: string
   /** Color of the placeholder text. */
   placeholderColor?: string
   /** Character to show for password masking. Set to empty string to disable. */
@@ -49,52 +53,61 @@ export interface InputProps {
  */
 export const Input: React.FC<InputProps> = ({
   placeholder = "",
-  value: controlledValue,
+  value = "",
   onChange,
   onSubmit,
   label,
-  color = "white",
+  labelColor,
+  textColor = "white",
   placeholderColor = "gray",
   mask,
   focus = true,
-  radius = "round",
+  radius = "none",
+  borderColor,
 }) => {
-  const [internalValue, setInternalValue] = useState("")
-  const value = controlledValue ?? internalValue
+  const valueRef = useRef(value)
+  const onChangeRef = useRef(onChange)
+  const onSubmitRef = useRef(onSubmit)
 
-  useInput(
-    (input, key) => {
-      if (!focus) return
+  useEffect(() => {
+    valueRef.current = value
+    onChangeRef.current = onChange
+    onSubmitRef.current = onSubmit
+  }, [value, onChange, onSubmit])
 
-      if (key.return) {
-        onSubmit?.(value)
-        return
-      }
+  const handleInput = useCallback((input: string, key: Key) => {
+    if (!focus) return
 
-      if (key.backspace || key.delete) {
-        const newValue = value.slice(0, -1)
-        setInternalValue(newValue)
-        onChange?.(newValue)
-        return
-      }
+    const currentValue = valueRef.current
 
-      // Ignore control characters
-      if (key.ctrl || key.meta || key.escape || key.tab) return
-      // Ignore arrow keys and other special keys
-      if (key.upArrow || key.downArrow || key.leftArrow || key.rightArrow) return
+    if (key.return) {
+      onSubmitRef.current?.(currentValue)
+      return
+    }
 
-      const newValue = value + input
-      setInternalValue(newValue)
-      onChange?.(newValue)
-    },
-    { isActive: focus }
-  )
+    if (key.backspace || key.delete) {
+      const newValue = currentValue.slice(0, -1)
+      onChangeRef.current?.(newValue)
+      return
+    }
+
+    // Ignore control characters
+    if (key.ctrl || key.meta || key.escape || key.tab) return
+    // Ignore arrow keys and other special keys
+    if (key.upArrow || key.downArrow || key.leftArrow || key.rightArrow) return
+
+    if (input) {
+      onChangeRef.current?.(currentValue + input)
+    }
+  }, [focus])
+
+  useInput(handleInput, { isActive: focus })
 
   const displayValue = mask ? mask.repeat(value.length) : value
   const isEmpty = value.length === 0
 
   const resolvedBorderStyle = radius === "none" ? "single" : "round"
-  const resolvedBorderColor = focus ? "cyan" : "gray"
+  const resolvedBorderColor = borderColor ?? (focus ? "cyan" : "gray")
 
   return (
     <Box
@@ -113,13 +126,13 @@ export const Input: React.FC<InputProps> = ({
           paddingLeft={1}
           paddingRight={1}
         >
-          <Text bold color={resolvedBorderColor}>
+          <Text bold color={labelColor ?? resolvedBorderColor}>
             {label}
           </Text>
         </Box>
       )}
       <Box paddingLeft={1} paddingRight={1} flexDirection="row" gap={1}>
-        <Text color={isEmpty ? placeholderColor : color}>
+        <Text color={isEmpty ? placeholderColor : textColor}>
           {isEmpty ? placeholder : displayValue}
         </Text>
         {focus && <Text color="cyan">▋</Text>}
