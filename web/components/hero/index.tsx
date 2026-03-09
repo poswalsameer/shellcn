@@ -1,13 +1,13 @@
+"use client"
+
 import { useState } from "react"
 import { motion } from "motion/react"
 import { Check, Copy, Terminal } from "lucide-react"
-import { Card } from "@/components/ui/card"
 import { registryComponents } from "@/constants/registery-components"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog"
+import { ComponentCard } from "@/components/component-card"
 
 export default function Hero() {
   const [copiedInit, setCopiedInit] = useState(false)
-  const [copiedComponent, setCopiedComponent] = useState<string | null>(null)
 
   function handleCopyInitCommand() {
     navigator.clipboard.writeText("npx shellcn init")
@@ -15,29 +15,24 @@ export default function Hero() {
     setTimeout(() => setCopiedInit(false), 2000)
   }
 
-  function handleCopyComponentCommand(command: string) {
-    navigator.clipboard.writeText(command)
-    setCopiedComponent(command)
-    setTimeout(() => setCopiedComponent(null), 2000)
-  }
-
   return (
     <main className="w-full flex flex-col items-center px-6">
       {/* Hero Section */}
-      <section className="w-full flex flex-col items-center justify-center gap-8 text-center pt-12">
+      <section className="w-full flex flex-col items-center justify-center gap-8 text-center pt-24 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex flex-col items-center gap-6"
         >
-          <div className="text-5xl md:text-6xl flex flex-col gap-y-4 font-bold tracking-tight max-w-5xl">
-            <div>BUILDING TERMINAL UI</div>
-            <div>IS FINALLY EASY</div>
+          <div className="text-5xl md:text-7xl flex flex-col gap-y-2 font-black tracking-tighter max-w-5xl">
+            <span className="bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/60">BUILDING TERMINAL UI</span>
+            <span className="bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/60 text-4xl md:text-6xl">IS FINALLY EASY</span>
           </div>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl font-medium">
-            Accessible. Customisable. Open Source.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl font-medium tracking-tight">
+            Beautifully designed, accessible CLI components. <br />
+            Built with React for the modern terminal.
           </p>
         </motion.div>
 
@@ -50,118 +45,33 @@ export default function Hero() {
           {/* Copy Command Box */}
           <div
             onClick={handleCopyInitCommand}
-            className="group relative flex items-center justify-between gap-4 rounded-none border border-border bg-muted/30 px-6 py-3 text-sm cursor-pointer hover:bg-muted/80 transition-colors"
+            className="group relative flex items-center justify-between gap-6 rounded-none border border-border bg-muted/20 hover:bg-muted/40 px-8 py-4 text-sm cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md"
           >
-            <div className="flex items-center gap-2">
-              <Terminal className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium">npx shellcn init</span>
+            <div className="flex items-center gap-4">
+              <Terminal className="h-4 w-4 text-primary opacity-80 group-hover:opacity-100 transition-opacity" />
+              <span className="font-mono text-[13px] tracking-tight text-foreground/90 font-medium">npx shellcn init</span>
             </div>
-            {copiedInit ? (
-              <Check className="h-4 w-4 text-foreground" />
-            ) : (
-              <Copy className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-            )}
+            <div className="flex items-center justify-center w-5 h-5">
+              {copiedInit ? (
+                <Check className="h-4 w-4 text-green-500 animate-in zoom-in-50 duration-200" />
+              ) : (
+                <Copy className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-all duration-200" />
+              )}
+            </div>
           </div>
         </motion.div>
       </section>
 
       {/* Components Section */}
-      <section id="components-grid" className="w-full max-w-6xl py-12 flex flex-col gap-12">
+      <section id="components-grid" className="w-full max-w-6xl py-24 flex flex-col gap-12">
+        <div className="flex flex-col items-center gap-2 mb-8">
+          <h2 className="text-3xl font-bold tracking-tight">Components</h2>
+          <p className="text-muted-foreground text-lg">Browse the official registry of components.</p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {registryComponents.map((component, idx) => (
-            <Dialog key={component.name}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: idx * 0.05 }}
-              >
-                <Card className="h-72 flex flex-col rounded-none overflow-hidden border-border/60 hover:border-foreground/50 transition-colors bg-card hover:bg-muted/10 group">
-                  <DialogTrigger asChild>
-                    <div className="h-[90%] w-full border-b border-border/40 bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-col items-center justify-center p-6 relative cursor-pointer">
-                      {component.preview}
-                    </div>
-                  </DialogTrigger>
-                  <div className="h-[10%] flex justify-center items-center gap-x-4 cursor-pointer" onClick={() => handleCopyComponentCommand(component.command)}>
-                    <span className="font-mono text-sm text-muted-foreground group-hover/command:text-foreground transition-colors">
-                      {component.command}
-                    </span>
-                    {copiedComponent === component.command ? (
-                      <Check className="h-3 w-3 text-foreground" />
-                    ) : (
-                      <Copy className="h-3 w-3 text-muted-foreground group-hover/command:text-foreground transition-colors" />
-                    )}
-                  </div>
-                </Card>
-              </motion.div>
-
-              <DialogContent className="sm:max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[85vh] overflow-y-auto custom-scrollbar">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">{component.name}</DialogTitle>
-                  <DialogDescription className="text-base mt-1">
-                    {component.docs?.description}
-                  </DialogDescription>
-                </DialogHeader>
-
-                {component.docs && (
-                  <div className="flex flex-col gap-8 mt-4 pb-4">
-                    <div className="flex flex-col gap-3">
-                      <h3 className="text-lg font-semibold tracking-tight text-foreground border-b border-border pb-2">Import</h3>
-                      <div className="bg-zinc-50 dark:bg-black border border-border rounded-lg p-4 text-sm font-mono overflow-x-auto text-zinc-950 dark:text-zinc-50">
-                        <code>{component.docs.import}</code>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <h3 className="text-lg font-semibold tracking-tight text-foreground border-b border-border pb-2">Usage</h3>
-                      <div className="bg-zinc-50 dark:bg-black border border-border rounded-lg p-4 text-sm font-mono whitespace-pre-wrap overflow-x-auto text-zinc-950 dark:text-zinc-50">
-                        <code>{component.docs.example}</code>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <h3 className="text-lg font-semibold tracking-tight text-foreground border-b border-border pb-2">Props</h3>
-                      <div className="border border-border rounded-lg overflow-hidden">
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-sm text-left">
-                            <thead className="bg-muted text-foreground border-b border-border text-xs uppercase">
-                              <tr>
-                                <th className="px-4 py-3 font-medium">Prop</th>
-                                <th className="px-4 py-3 font-medium">Type</th>
-                                <th className="px-4 py-3 font-medium">Description</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border">
-                              {component.docs.props.map((prop, i) => (
-                                <tr key={i} className="bg-card hover:bg-muted/50 transition-colors">
-                                  <td className="px-4 py-3 align-top">
-                                    <code className="font-mono text-[13px] font-semibold text-primary px-1.5 py-0.5 rounded-md bg-primary/10">{prop.name}</code>
-                                  </td>
-                                  <td className="px-4 py-3 align-top">
-                                    <code className="font-mono text-[13px] text-muted-foreground whitespace-nowrap">{prop.type}</code>
-                                  </td>
-                                  <td className="px-4 py-3 align-top text-muted-foreground">
-                                    <div className="flex flex-col gap-1.5">
-                                      <span>{prop.description}</span>
-                                      {prop.default && (
-                                        <span className="text-xs">
-                                          Default: <code className="font-mono bg-muted px-1.5 py-0.5 rounded border border-border">{prop.default}</code>
-                                        </span>
-                                      )}
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </DialogContent>
-            </Dialog>
+            <ComponentCard key={component.name} component={component} index={idx} />
           ))}
         </div>
       </section>

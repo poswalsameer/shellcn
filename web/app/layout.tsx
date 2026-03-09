@@ -1,10 +1,15 @@
 import type { Metadata } from "next"
-import { Manrope } from "next/font/google"
+import { Manrope, JetBrains_Mono } from "next/font/google"
 import { ThemeProvider } from "@/providers/theme-provider"
 import "./globals.css"
 
 const manrope = Manrope({
   variable: "--font-manrope",
+  subsets: ["latin"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 })
 
@@ -20,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.className} font-sans antialiased`}>
+      <body className={`${manrope.className} ${jetbrainsMono.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
