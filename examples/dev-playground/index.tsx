@@ -53,37 +53,37 @@ const App: React.FC = () => {
   return (
     <Container flexDirection="column" padding={1} gap={2}>
       {/* 1. Text */}
-      {/* <Section title="• TEXT">
+       <Section title="• TEXT">
         <Text color="cyan">Bold green text</Text>
         <Text dimmed>Dimmed text</Text>
         <Text color="yellow" underline>Underlined yellow</Text>
         <Text color="red" strikethrough>Strikethrough red</Text>
-      </Section> */}
+      </Section>
 
       {/* 2. Container */}
-      {/* <Section title="• CONTAINER">
+      <Section title="• CONTAINER">
         <Container flexDirection="row" justifyContent="center" radius="none" borderColor="white" padding={1}>
           <Text color="yellow">Container with border radius and padding</Text>
         </Container>
-      </Section> */}
+      </Section> 
 
       {/* 3. Separator */}
-      {/* <Section title="• SEPARATOR">
+      <Section title="• SEPARATOR">
         <Text>Above separator</Text>
         <Separator color="yellow" />
         <Text>Below separator</Text>
-      </Section> */}
+      </Section>
 
       {/* 4. Progress */}
-      {/* <Section title="• PROGRESS">
+      <Section title="• PROGRESS">
         <Container flexDirection="row" gap={1}>
           <Container width="12"><Text>Build:</Text></Container>
           <Progress value={0.35} color="yellow" showPercentage />
         </Container>
-      </Section> */}
+      </Section>
 
       {/* 5. Table */}
-      {/* <Section title="• TABLE">
+      <Section title="• TABLE">
         <Table
           columns={[
             { header: "Name", accessor: "name", width: 15 },
@@ -99,10 +99,10 @@ const App: React.FC = () => {
           headerColor="cyan"
           borderColor="red"
         />
-      </Section> */}
+      </Section>
 
       {/* INPUT */}
-      {/* <Section title="• INPUT">
+      <Section title="• INPUT">
         <Input
           label="Name:"
           placeholder="Type something..."
@@ -113,10 +113,10 @@ const App: React.FC = () => {
           textColor="yellow"
           labelColor="white"
         />
-      </Section> */}
+      </Section>
 
       {/* 7. Select */}
-      {/* <Section title="• SELECT">
+      <Section title="• SELECT">
         <Select
           label="Pick a framework:"
           options={[
@@ -131,10 +131,10 @@ const App: React.FC = () => {
           highlightColor="yellow"
           indicator="▶"
         />
-      </Section> */}
+      </Section>
 
       {/* 8. Checkbox */}
-      {/* <Section title="• CHECKBOX">
+      <Section title="• CHECKBOX">
         <Checkbox
           label="Select features:"
           items={[
@@ -149,17 +149,17 @@ const App: React.FC = () => {
           textColor="white"
           highlightColor="yellow"
         />
-      </Section> */}
+      </Section>
 
       {/* 9. Alert */}
-      {/* <Section title="• ALERT">
+      <Section title="• ALERT">
         <Alert variant="info" radius="none">This is an info alert with square corners.</Alert>
         <Alert variant="success" title="Success" radius="round">Operation completed.</Alert>
         <Alert variant="warning" radius="round" alignItems="center">Center aligned warning.</Alert>
         <Alert variant="error" title="Critical Error" borderColor="magenta" color="white" radius="none">
           Connection failed. (Custom colored)
         </Alert>
-      </Section> */}
+      </Section>
 
       {/* 10. Card */}
       <Section title="• CARD">
