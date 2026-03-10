@@ -1,18 +1,23 @@
-import { Github } from "lucide-react"
+import { Github, Terminal } from "lucide-react"
 import { ModeToggle } from "../theme-toggle"
 import { Button } from "@/components/ui/button"
 
 export default function Navbar() {
   return (
-    <nav className="w-full max-w-5xl flex items-center justify-between p-6">
-      <div className="font-bold text-xl tracking-tighter cursor-default">
-        shellcn
+    <nav className="w-full max-w-6xl flex items-center justify-between py-6">
+      <div className="font-black text-xl flex items-center gap-1 tracking-tighter cursor-default group">
+        <div className="bg-foreground text-background p-0.5 flex items-center justify-center">
+          <Terminal className="h-3 w-3" strokeWidth={3} />
+        </div>
+        <div className="flex items-center">
+          shellcn
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
           size="icon"
-          className="rounded-none"
+          className="rounded-none border-2 dark:border-muted-foreground/30 dark:hover:border-muted-foreground/40 border-muted-foreground/30 hover:border-muted-foreground/40"
           asChild
         >
           <a

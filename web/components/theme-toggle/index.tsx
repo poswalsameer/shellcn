@@ -13,7 +13,7 @@ export function ModeToggle() {
       variant="outline"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="rounded-none"
+      className="rounded-none border-2 dark:border-muted-foreground/30 dark:hover:border-muted-foreground/40 border-muted-foreground/30 hover:border-muted-foreground/40"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

@@ -1,8 +1,7 @@
 "use client"
 
-import React from "react"
 import { registryComponents } from "@/constants/registery-components"
-import { ComponentCard } from "@/components/component-card"
+import { ComponentCard } from "@/components/components-section/component-card"
 
 export default function ComponentsSection() {
   return (
