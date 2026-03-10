@@ -35,10 +35,10 @@ export function ComponentCard({ component, index }: {
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.05 }}
       >
-        <Card className="h-72 ring-0 flex flex-col rounded-none border-2 border-muted-foreground/30 hover:border-muted-foreground/40 transition-all bg-card hover:bg-muted/10 group">
+        <Card className="h-80 ring-0 flex flex-col rounded-none border-2 border-muted-foreground/30 hover:border-muted-foreground/40 transition-all bg-card hover:bg-muted/10 group overflow-hidden">
           <DialogTrigger asChild className="h-full">
-            <div className="h-[80%] w-full flex flex-col items-center justify-center p-6 relative cursor-pointer transition-colors">
-              <div className="transform group-hover:scale-105 transition-transform duration-300">
+            <div className="h-[80%] w-full flex flex-col items-center justify-center p-4 relative cursor-pointer transition-colors ">
+              <div className="w-full h-full transform group-hover:scale-[1.03] transition-transform duration-300 ease-out">
                 {component.preview}
               </div>
             </div>
