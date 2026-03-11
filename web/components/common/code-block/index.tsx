@@ -81,7 +81,7 @@ export function CodeBlock({
       </div>
 
       <div className={`
-        relative font-mono text-sm leading-normal custom-scrollbar selection:bg-primary/20
+        relative font-mono text-sm leading-normal custom-scrollbar overflow-x-auto
         ${isSingleLine ? "p-3 px-4 pr-12" : "p-4"}
       `}>
         {html ? (
