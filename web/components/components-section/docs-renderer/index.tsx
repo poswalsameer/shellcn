@@ -24,7 +24,7 @@ export function DocsRenderer({ docs }: { docs: DocsSchema }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-lg font-semibold text-muted-foreground tracking-tight">Installation / Import</h3>
+        <h3 className="text-lg font-semibold text-muted-foreground tracking-tight">Import</h3>
         <CodeBlock code={docs.import} language="tsx" />
       </div>
 

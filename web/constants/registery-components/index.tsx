@@ -5,23 +5,22 @@ import { AlertPreview, CardPreview, CheckboxPreview, ContainerPreview, InputPrev
 
 export const registryComponents = [
 
+  // PROGRESS
   {
-    name: "Text",
-    command: "npx shellcn add text",
-    preview: <TextPreview />,
+    name: "Progress",
+    command: "npx shellcn add progress",
+    preview: <ProgressPreview />,
     docs: {
-      description: "Styled text component with colors and formatting.",
-      import: 'import { Text } from "@/components/text"',
-      example: `<Text color="green" bold>Success!</Text>\n<Text color="#FF5733">Custom hex color</Text>\n<Text dimmed>Loading...</Text>`,
+      description: "Progress bar component for indicating completion percentage.",
+      import: 'import { Progress } from "@/components/progress"',
+      example: `<Progress value={0.65} color="green" showPercentage />\n<Progress value={0.3} width={40} fillChar="█" emptyChar="░" />`,
       props: [
-        { name: "children", type: "React.ReactNode", description: "Text content to display." },
-        { name: "color", type: "Color", description: "Text color (named, hex, rgb)." },
-        { name: "bold", type: "boolean", description: "Render text in bold.", default: "false" },
-        { name: "italic", type: "boolean", description: "Render text in italic.", default: "false" },
-        { name: "dimmed", type: "boolean", description: "Dim the text (lower intensity).", default: "false" },
-        { name: "underline", type: "boolean", description: "Add an underline to the text.", default: "false" },
-        { name: "strikethrough", type: "boolean", description: "Add a strikethrough to the text.", default: "false" },
-        { name: "wrap", type: '"wrap" | "truncate" | "truncate-start" | "truncate-middle" | "truncate-end"', description: "Wrap text behavior." },
+        { name: "value", type: "number", description: "Progress value between 0 and 1." },
+        { name: "width", type: "number", description: "Total width in columns.", default: "30" },
+        { name: "fillChar", type: "string", description: "Filled portion character.", default: '"█"' },
+        { name: "emptyChar", type: "string", description: "Empty portion character.", default: '"░"' },
+        { name: "color", type: "string", description: "Fill color.", default: '"green"' },
+        { name: "showPercentage", type: "boolean", description: "Show percentage label.", default: "true" },
       ]
     }
   },
@@ -87,27 +86,29 @@ export const registryComponents = [
     }
   },
 
-  // PROGRESS ────────────────────────────────────────────────────────────────
+  // TEXT
   {
-    name: "Progress",
-    command: "npx shellcn add progress",
-    preview: <ProgressPreview />,
+    name: "Text",
+    command: "npx shellcn add text",
+    preview: <TextPreview />,
     docs: {
-      description: "Progress bar component for indicating completion percentage.",
-      import: 'import { Progress } from "@/components/progress"',
-      example: `<Progress value={0.65} color="green" showPercentage />\n<Progress value={0.3} width={40} fillChar="█" emptyChar="░" />`,
+      description: "Styled text component with colors and formatting.",
+      import: 'import { Text } from "@/components/text"',
+      example: `<Text color="green" bold>Success!</Text>\n<Text color="#FF5733">Custom hex color</Text>\n<Text dimmed>Loading...</Text>`,
       props: [
-        { name: "value", type: "number", description: "Progress value between 0 and 1." },
-        { name: "width", type: "number", description: "Total width in columns.", default: "30" },
-        { name: "fillChar", type: "string", description: "Filled portion character.", default: '"█"' },
-        { name: "emptyChar", type: "string", description: "Empty portion character.", default: '"░"' },
-        { name: "color", type: "string", description: "Fill color.", default: '"green"' },
-        { name: "showPercentage", type: "boolean", description: "Show percentage label.", default: "true" },
+        { name: "children", type: "React.ReactNode", description: "Text content to display." },
+        { name: "color", type: "Color", description: "Text color (named, hex, rgb)." },
+        { name: "bold", type: "boolean", description: "Render text in bold.", default: "false" },
+        { name: "italic", type: "boolean", description: "Render text in italic.", default: "false" },
+        { name: "dimmed", type: "boolean", description: "Dim the text (lower intensity).", default: "false" },
+        { name: "underline", type: "boolean", description: "Add an underline to the text.", default: "false" },
+        { name: "strikethrough", type: "boolean", description: "Add a strikethrough to the text.", default: "false" },
+        { name: "wrap", type: '"wrap" | "truncate" | "truncate-start" | "truncate-middle" | "truncate-end"', description: "Wrap text behavior." },
       ]
     }
   },
 
-  // TABLE ───────────────────────────────────────────────────────────────────
+  // TABLE 
   {
     name: "Table",
     command: "npx shellcn add table",
@@ -127,7 +128,7 @@ export const registryComponents = [
     }
   },
 
-  // INPUT ───────────────────────────────────────────────────────────────────
+  // INPUT 
   {
     name: "Input",
     command: "npx shellcn add input",
@@ -149,7 +150,7 @@ export const registryComponents = [
     }
   },
 
-  // SELECT ──────────────────────────────────────────────────────────────────
+  // SELECT 
   {
     name: "Select",
     command: "npx shellcn add select",
@@ -170,7 +171,7 @@ export const registryComponents = [
     }
   },
 
-  // CHECKBOX ────────────────────────────────────────────────────────────────
+  // CHECKBOX 
   {
     name: "Checkbox",
     command: "npx shellcn add checkbox",
@@ -191,7 +192,7 @@ export const registryComponents = [
     }
   },
 
-  // SEPARATOR ───────────────────────────────────────────────────────────────
+  // SEPARATOR 
   {
     name: "Separator",
     command: "npx shellcn add separator",
