@@ -15,7 +15,7 @@ import {
 
 export function DocsRenderer({ docs }: { docs: DocsSchema }) {
   return (
-    <div className="flex flex-col gap-8 sm:gap-12 mt-4 pb-8 sm:pb-12 w-full max-w-full animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div className="flex flex-col gap-8 sm:gap-12 mt-4 pb-8 sm:pb-12 w-full max-w-full animate-in fade-in slide-in-from-bottom-2 duration-500 selection:bg-foreground selection:text-background">
       <div className="flex flex-col gap-1">
         <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground border-b border-border/40">Introduction</h2>
         <p className="text-base sm:text-lg font-medium text-muted-foreground leading-relaxed max-w-3xl">

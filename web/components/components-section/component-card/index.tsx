@@ -58,7 +58,7 @@ export function ComponentCard({ component, index }: {
         </Card>
       </motion.div>
 
-      <DialogContent className="w-[95vw] sm:max-w-4xl md:max-w-5xl lg:max-w-6xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto custom-scrollbar border-2 border-muted-foreground/30 ring-0 bg-background p-0 rounded-none sm:rounded-lg">
+      <DialogContent className="w-[95vw] sm:max-w-4xl md:max-w-5xl lg:max-w-6xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto custom-scrollbar border-2 border-muted-foreground/30 ring-0 bg-background p-0 rounded-none sm:rounded-lg selection:bg-foreground selection:text-background">
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 px-4 sm:px-8 py-4 sm:py-6">
           <DialogHeader className="flex flex-col gap-y-1">
             <DialogTitle className="text-xl sm:text-2xl font-semibold tracking-tight uppercase">{component.name}</DialogTitle>
