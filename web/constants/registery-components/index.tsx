@@ -1,55 +1,14 @@
 import React from "react"
+import { AlertPreview, CardPreview, CheckboxPreview, ContainerPreview, InputPreview, ProgressPreview, SelectPreview, SeparatorPreview, TablePreview, TextPreview } from "@/components/components-section/preview-components"
 
-const M = "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace"
-const C = {
-  t4: "#3f3f3f", t3: "#525252", t2: "#a3a3a3",
-  t1: "#d4d4d4", t0: "#f5f5f5",
-  b1: "#141414", b2: "#1e1e1e", b3: "#2a2a2a",
-}
 
-function Box({ children, color = C.t1, round = false, style }: {
-  children?: React.ReactNode; color?: string; round?: boolean; style?: React.CSSProperties
-}) {
-  return (
-    <div style={{ border: `1px solid ${color}`, borderRadius: round ? 4 : 0, display: "flex", flexDirection: "column", ...style }}>
-      {children}
-    </div>
-  )
-}
-
-function Hr({ color = C.b3 }: { color?: string }) {
-  return <div style={{ height: "1px", background: color, flexShrink: 0 }} />
-}
-
-function Lbl({ t }: { t: string }) {
-  return <div style={{ fontFamily: M, fontSize: 9, color: C.t2, fontWeight: 700, letterSpacing: "0.1em", marginBottom: 8 }}>{t}</div>
-}
-
-const ROOT: React.CSSProperties = { width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", fontFamily: M, fontSize: 11 }
 
 export const registryComponents = [
 
   {
     name: "Text",
     command: "npx shellcn add text",
-    preview: (
-      <div style={{ ...ROOT, gap: 3, lineHeight: 1.75, padding: "0 2px" }}>
-        <Lbl t="• TEXT" />
-        <span style={{ color: "#22d3ee" }}>Bold green text</span>
-        <span style={{ color: C.t3 }}>Dimmed text</span>
-        <span style={{ color: "#fde047", textDecoration: "underline" }}>Underlined yellow</span>
-        <span style={{ color: "#f87171", textDecoration: "line-through" }}>Strikethrough red</span>
-        <div style={{ marginTop: 10, padding: "5px 9px", background: C.b1, border: `1px solid ${C.b3}`, fontSize: 10, borderRadius: 2 }}>
-          <span style={{ color: C.t3 }}>{"<"}</span>
-          <span style={{ color: C.t1 }}>Text </span>
-          <span style={{ color: C.t2 }}>color</span>
-          <span style={{ color: C.t3 }}>{"="}</span>
-          <span style={{ color: "#22d3ee" }}>&quot;cyan&quot;</span>
-          <span style={{ color: "#fde047" }}> bold</span>
-          <span style={{ color: C.t3 }}>{" />"}</span>
-        </div>
-      </div>
-    ),
+    preview: <TextPreview />,
     docs: {
       description: "Styled text component with colors and formatting.",
       import: 'import { Text } from "@/components/text"',
@@ -67,32 +26,11 @@ export const registryComponents = [
     }
   },
 
-  // CONTAINER ───────────────────────────────────────────────────────────────
+  // CONTAINER 
   {
     name: "Container",
     command: "npx shellcn add container",
-    preview: (
-      <div style={{ ...ROOT, gap: 10 }}>
-        <Lbl t="• CONTAINER" />
-        {/* Single border, padding, centered yellow text */}
-        <Box color={C.t1} style={{ padding: "8px 12px", alignItems: "center" }}>
-          <span style={{ color: "#fde047" }}>Container with border + padding</span>
-        </Box>
-        {/* Nested layout: outer box shows flexRow children */}
-        <Box color={C.t3} style={{ padding: 8, flexDirection: "row", gap: 8 }}>
-          <Box color={C.b3} style={{ flex: 2, padding: "6px 8px", gap: 4 }}>
-            <div style={{ fontSize: 9, color: C.t4, marginBottom: 4 }}>flexDirection=&quot;col&quot;</div>
-            {[100, 70, 50].map((w, i) => (
-              <div key={i} style={{ height: 3, width: `${w}%`, background: C.b3, borderRadius: 1 }} />
-            ))}
-          </Box>
-          <Box color={C.b3} style={{ flex: 1, padding: "6px 8px", alignItems: "center", justifyContent: "center", gap: 4 }}>
-            <div style={{ fontSize: 9, color: C.t4 }}>center</div>
-            <div style={{ width: 14, height: 14, border: `1px solid ${C.b3}` }} />
-          </Box>
-        </Box>
-      </div>
-    ),
+    preview: <ContainerPreview />,
     docs: {
       description: "A layout container for padding, margin, borders, and flexbox.",
       import: 'import { Container } from "@/components/container"',
@@ -111,30 +49,11 @@ export const registryComponents = [
     }
   },
 
-  // CARD ────────────────────────────────────────────────────────────────────
+  // CARD
   {
     name: "Card",
     command: "npx shellcn add card",
-    preview: (
-      <div style={{ ...ROOT }}>
-        <Lbl t="• CARD" />
-        {/* Card: outer bordered box (borderColor="cyan") */}
-        <Box color="#22d3ee" style={{ overflow: "hidden" }}>
-          {/* CardTitle: bold white, marginBottom=1 */}
-          <div style={{ padding: "7px 10px 10px", color: C.t0, fontWeight: 700 }}>System Info</div>
-          <Hr color="#22d3ee22" />
-          {/* Body: Text rows */}
-          <div style={{ padding: "8px 10px", display: "flex", flexDirection: "column", gap: 3, color: C.t1 }}>
-            <span>CPU Usage: 42%</span>
-            <span>Memory: 3.2 GB / 16 GB</span>
-            <span>Uptime: 5 days</span>
-          </div>
-          <Hr color="#22d3ee22" />
-          {/* CardFooter: dimmed, marginTop=1 */}
-          <div style={{ padding: "8px 10px 7px", color: C.t3 }}>Updated just now</div>
-        </Box>
-      </div>
-    ),
+    preview: <CardPreview />,
     docs: {
       description: "A bordered container component for grouping related content, often used with Titles and Footers.",
       import: 'import { Card, CardTitle, CardFooter } from "@/components/card"',
@@ -148,30 +67,11 @@ export const registryComponents = [
     }
   },
 
-  // ALERT ───────────────────────────────────────────────────────────────────
+  // ALERT
   {
     name: "Alert",
     command: "npx shellcn add alert",
-    preview: (
-      <div style={{ ...ROOT, gap: 8 }}>
-        <Lbl t="• ALERT" />
-        {/* info: square corners, blue border */}
-        <Box color="#3b82f6">
-          <div style={{ padding: "7px 10px", color: "#3b82f6", fontSize: 11 }}>
-            This is an info alert with square corners.
-          </div>
-        </Box>
-        {/* success: round corners, green border, bold title */}
-        <Box color="#22c55e" round>
-          <div style={{ padding: "7px 10px 4px", color: "#22c55e", fontWeight: 700 }}>Success</div>
-          <div style={{ padding: "0 10px 7px", color: "#22c55e", fontSize: 11 }}>Operation completed.</div>
-        </Box>
-        {/* warning: round, centered */}
-        <Box color="#eab308" round style={{ alignItems: "center" }}>
-          <div style={{ padding: "7px 10px", color: "#eab308", fontSize: 11 }}>Center aligned warning.</div>
-        </Box>
-      </div>
-    ),
+    preview: <AlertPreview />,
     docs: {
       description: "Alert box component for displaying colored messages.",
       import: 'import { Alert } from "@/components/alert"',
@@ -191,34 +91,7 @@ export const registryComponents = [
   {
     name: "Progress",
     command: "npx shellcn add progress",
-    preview: (
-      <div style={{ ...ROOT, gap: 12 }}>
-        <Lbl t="• PROGRESS" />
-        {[
-          { label: "Build:", pct: 35, color: "#eab308" },
-          { label: "Tests:", pct: 63, color: C.t1 },
-          { label: "Deploy:", pct: 100, color: C.t1 },
-        ].map((item) => (
-          <div key={item.label} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ color: C.t1 }}>{item.label}</span>
-              <span style={{ color: item.color }}>{item.pct}%</span>
-            </div>
-            {/* The bar: filled portion + empty portion — mirrors fillChar/emptyChar */}
-            <div style={{ display: "flex", height: 5, gap: 2 }}>
-              {Array.from({ length: 30 }).map((_, i) => (
-                <div key={i} style={{
-                  flex: 1, height: "100%", borderRadius: 1,
-                  background: i < Math.round(item.pct / 100 * 30) ? item.color : C.b3,
-                }} />
-              ))}
-            </div>
-          </div>
-        ))}
-        {/* fillChar / emptyChar label hint */}
-        <div style={{ marginTop: 2, fontSize: 10, color: C.t4 }}>fillChar=&quot;█&quot; · emptyChar=&quot;░&quot;</div>
-      </div>
-    ),
+    preview: <ProgressPreview />,
     docs: {
       description: "Progress bar component for indicating completion percentage.",
       import: 'import { Progress } from "@/components/progress"',
@@ -238,36 +111,7 @@ export const registryComponents = [
   {
     name: "Table",
     command: "npx shellcn add table",
-    preview: (
-      <div style={{ ...ROOT, gap: 8 }}>
-        <Lbl t="• TABLE" />
-        {/* Outer table border */}
-        <Box color={C.t3} style={{ overflow: "hidden" }}>
-          {/* Header row */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 80px", background: C.b1 }}>
-            {["Name", "Role", "Status"].map((h) => (
-              <div key={h} style={{ padding: "6px 10px", fontSize: 10, fontWeight: 700, color: "#22d3ee", borderRight: `1px solid ${C.b3}` }}>{h}</div>
-            ))}
-          </div>
-          <Hr color={C.t3} />
-          {/* Data rows */}
-          {[
-            { name: "Alice", role: "Engineer", status: "Active" },
-            { name: "Bob", role: "Designer", status: "Away" },
-            { name: "Charlie", role: "PM", status: "Active" },
-          ].map((row, i, arr) => (
-            <div key={i}>
-              <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 80px", background: i % 2 ? C.b1 : "transparent" }}>
-                <div style={{ padding: "5px 10px", color: "#eab308", borderRight: `1px solid ${C.b2}` }}>{row.name}</div>
-                <div style={{ padding: "5px 10px", color: "#eab308", borderRight: `1px solid ${C.b2}` }}>{row.role}</div>
-                <div style={{ padding: "5px 10px", color: "#eab308", textAlign: "center" }}>{row.status}</div>
-              </div>
-              {i < arr.length - 1 && <Hr color={C.b2} />}
-            </div>
-          ))}
-        </Box>
-      </div>
-    ),
+    preview: <TablePreview />,
     docs: {
       description: "Data table component with headers and borders.",
       import: 'import { Table } from "@/components/table"',
@@ -287,36 +131,7 @@ export const registryComponents = [
   {
     name: "Input",
     command: "npx shellcn add input",
-    preview: (
-      <div style={{ ...ROOT, gap: 12 }}>
-        <Lbl t="• INPUT" />
-        {/* Focused: white border, label|value + cursor */}
-        <Box color={C.t1} style={{ flexDirection: "row", overflow: "hidden" }}>
-          {/* Label section — has borderRight (Ink: borderRight={true}) */}
-          <div style={{ padding: "7px 10px", borderRight: `1px solid ${C.t1}`, color: C.t1, fontWeight: 700, flexShrink: 0 }}>
-            Name:
-          </div>
-          {/* Value + block cursor */}
-          <div style={{ padding: "7px 10px", display: "flex", alignItems: "center", gap: 1, color: "#eab308" }}>
-            <span>shellcn</span>
-            {/* ▋ cursor as native CSS element */}
-            <span style={{ display: "inline-block", width: 2, height: "1em", background: C.t0, borderRadius: 1, marginLeft: 1, animation: "inputBlink 1.1s step-end infinite" }} />
-          </div>
-        </Box>
-
-        {/* Unfocused: gray border, placeholder */}
-        <Box color={C.t3} style={{ flexDirection: "row", overflow: "hidden" }}>
-          <div style={{ padding: "7px 10px", borderRight: `1px solid ${C.t3}`, color: C.t3, fontWeight: 700, flexShrink: 0 }}>
-            Email:
-          </div>
-          <div style={{ padding: "7px 10px", color: C.t4 }}>
-            Type something...
-          </div>
-        </Box>
-
-        <style>{`@keyframes inputBlink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
-      </div>
-    ),
+    preview: <InputPreview />,
     docs: {
       description: "Text input component for capturing keyboard input.",
       import: 'import { Input } from "@/components/input"',
@@ -338,32 +153,7 @@ export const registryComponents = [
   {
     name: "Select",
     command: "npx shellcn add select",
-    preview: (
-      <div style={{ ...ROOT, gap: 8 }}>
-        <Lbl t="• SELECT" />
-        <Box color={C.t1} style={{ overflow: "hidden" }}>
-          {/* Label row — has borderBottom (Ink: borderBottom={true}) */}
-          <div style={{ padding: "6px 10px", borderBottom: `1px solid ${C.t1}`, color: C.t1, fontWeight: 700 }}>
-            Pick a framework:
-          </div>
-          {/* Options — ▶ indicator on active item (indicator prop) */}
-          {[
-            { label: "React", active: true },
-            { label: "Vue", active: false },
-            { label: "Svelte", active: false },
-          ].map((opt, i) => (
-            <div key={i} style={{
-              display: "flex", alignItems: "center", gap: 8, padding: "6px 10px",
-              background: opt.active ? C.b2 : "transparent",
-              borderBottom: i < 2 ? `1px solid ${C.b2}` : "none",
-            }}>
-              <span style={{ color: opt.active ? "#eab308" : "transparent", fontSize: 10, width: 10, flexShrink: 0 }}>▶</span>
-              <span style={{ color: opt.active ? "#eab308" : C.t3, fontWeight: opt.active ? 700 : 400 }}>{opt.label}</span>
-            </div>
-          ))}
-        </Box>
-      </div>
-    ),
+    preview: <SelectPreview />,
     docs: {
       description: "Arrow-key select menu for choosing from a list of options.",
       import: 'import { Select } from "@/components/select"',
@@ -384,49 +174,7 @@ export const registryComponents = [
   {
     name: "Checkbox",
     command: "npx shellcn add checkbox",
-    preview: (
-      <div style={{ ...ROOT, gap: 8 }}>
-        <Lbl t="• CHECKBOX" />
-        <Box color={C.t1} style={{ overflow: "hidden" }}>
-          {/* Label row — borderBottom */}
-          <div style={{ padding: "6px 10px", borderBottom: `1px solid ${C.t1}`, color: "#eab308", fontWeight: 700 }}>
-            Select features:
-          </div>
-          {/* Items — ☑/☐ as native CSS boxes */}
-          {[
-            { label: "TypeScript", checked: true, focused: true },
-            { label: "ESLint", checked: false, focused: false },
-            { label: "Prettier", checked: true, focused: false },
-          ].map((item, i) => (
-            <div key={i} style={{
-              display: "flex", alignItems: "center", gap: 8, padding: "6px 10px",
-              background: item.focused ? C.b2 : "transparent",
-              borderBottom: i < 2 ? `1px solid ${C.b2}` : "none",
-            }}>
-              {/* Native CSS checkbox box — replaces ☐ / ☑ */}
-              <div style={{
-                width: 13, height: 13, flexShrink: 0,
-                border: `1px solid ${item.checked ? "#eab308" : C.t3}`,
-                borderRadius: 1,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: item.checked ? "#eab30814" : "transparent",
-              }}>
-                {item.checked && (
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M1.5 4L3.2 5.8L6.5 2.2" stroke="#eab308" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </div>
-              <span style={{ color: item.checked ? "#eab308" : C.t3, fontWeight: item.focused ? 700 : 400 }}>{item.label}</span>
-            </div>
-          ))}
-          {/* Hint line — dimColor */}
-          <div style={{ padding: "5px 10px", color: C.t4, fontSize: 10 }}>
-            ↑↓ navigate · space toggle · enter confirm
-          </div>
-        </Box>
-      </div>
-    ),
+    preview: <CheckboxPreview />,
     docs: {
       description: "Multi-select checkbox list.",
       import: 'import { Checkbox } from "@/components/checkbox"',
@@ -447,32 +195,7 @@ export const registryComponents = [
   {
     name: "Separator",
     command: "npx shellcn add separator",
-    preview: (
-      <div style={{ ...ROOT, gap: 16, padding: "0 2px" }}>
-        <Lbl t="• SEPARATOR" />
-        {/* Main demo: content, separator, content */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <span style={{ color: C.t1 }}>Above separator</span>
-          {/* Native div replaces the ─────── ASCII line + Ink borderBottom box */}
-          <div style={{ height: 1, background: "#eab308", width: "100%" }} />
-          <span style={{ color: C.t1 }}>Below separator</span>
-        </div>
-        {/* Color variants */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          {[
-            { label: "gray", color: C.t3 },
-            { label: "white", color: C.t1 },
-            { label: "cyan", color: "#22d3ee" },
-            { label: "magenta", color: "#c084fc" },
-          ].map((sep) => (
-            <div key={sep.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 9, color: C.t4, width: 44, flexShrink: 0 }}>{sep.label}</span>
-              <div style={{ flex: 1, height: 1, background: sep.color }} />
-            </div>
-          ))}
-        </div>
-      </div>
-    ),
+    preview: <SeparatorPreview />,
     docs: {
       description: "Visually separates content with a horizontal or vertical line.",
       import: 'import { Separator } from "@/components/separator"',
