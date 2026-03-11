@@ -3,7 +3,7 @@ import { Github, Linkedin, Twitter } from "lucide-react"
 export default function Footer() {
 
   return (
-    <footer className="w-full max-w-6xl py-6 flex flex-col md:flex-row items-center justify-between text-sm gap-6">
+    <footer className="w-full px-4 lg:px-0 lg:max-w-4xl xl:max-w-6xl py-6 flex flex-col sm:flex-row items-center justify-between text-sm gap-3 sm:gap-6">
       <div className="flex items-center gap-1 cursor-default">
         <span className="text-muted-foreground font-medium">Built for your terminal, by</span>
         <a
