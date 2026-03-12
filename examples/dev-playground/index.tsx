@@ -53,8 +53,8 @@ const App: React.FC = () => {
   return (
     <Container flexDirection="column" padding={1} gap={2}>
       {/* 1. Text */}
-       <Section title="• TEXT">
-        <Text color="cyan">Bold green text</Text>
+      <Section title="• TEXT">
+        <Text color="white">Bold green text</Text>
         <Text dimmed>Dimmed text</Text>
         <Text color="yellow" underline>Underlined yellow</Text>
         <Text color="red" strikethrough>Strikethrough red</Text>
@@ -65,7 +65,7 @@ const App: React.FC = () => {
         <Container flexDirection="row" justifyContent="center" radius="none" borderColor="white" padding={1}>
           <Text color="yellow">Container with border radius and padding</Text>
         </Container>
-      </Section> 
+      </Section>
 
       {/* 3. Separator */}
       <Section title="• SEPARATOR">

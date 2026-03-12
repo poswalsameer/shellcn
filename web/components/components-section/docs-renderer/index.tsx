@@ -11,8 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-
-
 export function DocsRenderer({ docs }: { docs: DocsSchema }) {
   return (
     <div className="flex flex-col gap-8 sm:gap-12 mt-4 pb-8 sm:pb-12 w-full max-w-full animate-in fade-in slide-in-from-bottom-2 duration-500 selection:bg-foreground selection:text-background">

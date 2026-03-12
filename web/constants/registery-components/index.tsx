@@ -20,7 +20,9 @@ export const registryComponents = [
         { name: "fillChar", type: "string", description: "Filled portion character.", default: '"█"' },
         { name: "emptyChar", type: "string", description: "Empty portion character.", default: '"░"' },
         { name: "color", type: "string", description: "Fill color.", default: '"green"' },
+        { name: "emptyColor", type: "string", description: "Color of the empty portion.", default: '"gray"' },
         { name: "showPercentage", type: "boolean", description: "Show percentage label.", default: "true" },
+        { name: "textColor", type: "string", description: "Color of the percentage text.", default: '"white"' },
       ]
     }
   },
@@ -36,10 +38,25 @@ export const registryComponents = [
       example: `<Container padding={1} radius="round" borderColor="cyan">\n  <Text>Hello, terminal!</Text>\n</Container>`,
       props: [
         { name: "children", type: "React.ReactNode", description: "Content inside the box." },
+        { name: "width", type: "number | string", description: "Width of the box." },
+        { name: "height", type: "number", description: "Height of the box in rows." },
+        { name: "padding", type: "number", description: "Padding on all sides." },
+        { name: "paddingX", type: "number", description: "Horizontal padding." },
+        { name: "paddingY", type: "number", description: "Vertical padding." },
+        { name: "paddingLeft", type: "number", description: "Left padding." },
+        { name: "paddingRight", type: "number", description: "Right padding." },
+        { name: "paddingTop", type: "number", description: "Top padding." },
+        { name: "paddingBottom", type: "number", description: "Bottom padding." },
+        { name: "margin", type: "number", description: "Margin on all sides." },
+        { name: "marginX", type: "number", description: "Horizontal margin." },
+        { name: "marginY", type: "number", description: "Vertical margin." },
+        { name: "marginLeft", type: "number", description: "Left margin." },
+        { name: "marginRight", type: "number", description: "Right margin." },
+        { name: "marginTop", type: "number", description: "Top margin." },
+        { name: "marginBottom", type: "number", description: "Bottom margin." },
         { name: "flexDirection", type: '"row" | "column" | "row-reverse" | "column-reverse"', description: "Flex direction.", default: '"column"' },
         { name: "alignItems", type: '"flex-start" | "flex-end" | "center" | "stretch"', description: "Cross-axis alignment." },
         { name: "justifyContent", type: '"flex-start" | "flex-end" | "center" | "space-between" | "space-around"', description: "Main-axis alignment." },
-        { name: "padding", type: "number", description: "Padding on all sides." },
         { name: "gap", type: "number", description: "Gap between children." },
         { name: "borderStyle", type: "BorderStyle", description: "Border style." },
         { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
@@ -62,6 +79,9 @@ export const registryComponents = [
         { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
         { name: "borderColor", type: "string", description: "Border color.", default: '"white"' },
         { name: "paddingX", type: "number", description: "Horizontal padding.", default: "1" },
+        { name: "Other Container Props", type: "ContainerProps", description: "This component also accepts all standard Container properties (like padding, margin, flex, etc)." },
+        { name: "CardTitle Props", type: "TextProps", description: "The <CardTitle> subcomponent accepts all standard Text properties (like color, dim, underline, etc)." },
+        { name: "CardFooter Props", type: "TextProps", description: "The <CardFooter> subcomponent accepts all standard Text properties." },
       ]
     }
   },
@@ -78,10 +98,14 @@ export const registryComponents = [
       props: [
         { name: "children", type: "React.ReactNode", description: "Content of the alert." },
         { name: "variant", type: '"info" | "success" | "warning" | "error"', description: "Visual variant.", default: '"info"' },
-        { name: "title", type: "string", description: "Bold title above message." },
+        { name: "title", type: "string", description: "Optional title displayed above the message." },
         { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
+        { name: "borderStyle", type: '"single" | "double" | "round" | "bold" | "classic"', description: "Optional manual override for border style." },
         { name: "color", type: "string", description: "Custom text color override." },
         { name: "borderColor", type: "string", description: "Custom border color override." },
+        { name: "flexDirection", type: '"row" | "column" | "row-reverse" | "column-reverse"', description: "Flex direction.", default: '"column"' },
+        { name: "alignItems", type: '"flex-start" | "flex-end" | "center" | "stretch"', description: "Cross-axis alignment." },
+        { name: "justifyContent", type: '"flex-start" | "flex-end" | "center" | "space-between" | "space-around"', description: "Main-axis alignment." },
       ]
     }
   },
@@ -98,12 +122,14 @@ export const registryComponents = [
       props: [
         { name: "children", type: "React.ReactNode", description: "Text content to display." },
         { name: "color", type: "Color", description: "Text color (named, hex, rgb)." },
+        { name: "backgroundColor", type: "Color", description: "Background color (named, hex, rgb)." },
         { name: "bold", type: "boolean", description: "Render text in bold.", default: "false" },
         { name: "italic", type: "boolean", description: "Render text in italic.", default: "false" },
         { name: "dimmed", type: "boolean", description: "Dim the text (lower intensity).", default: "false" },
         { name: "underline", type: "boolean", description: "Add an underline to the text.", default: "false" },
         { name: "strikethrough", type: "boolean", description: "Add a strikethrough to the text.", default: "false" },
-        { name: "wrap", type: '"wrap" | "truncate" | "truncate-start" | "truncate-middle" | "truncate-end"', description: "Wrap text behavior." },
+        { name: "inverse", type: "boolean", description: "Inverse background and foreground colors.", default: "false" },
+        { name: "wrap", type: '\"wrap\" | \"truncate\" | \"truncate-start\" | \"truncate-middle\" | \"truncate-end\"', description: "Wrap text behavior." },
       ]
     }
   },
@@ -146,6 +172,10 @@ export const registryComponents = [
         { name: "mask", type: "string", description: "Password masking character." },
         { name: "focus", type: "boolean", description: "Whether input is focused.", default: "true" },
         { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
+        { name: "labelColor", type: "string", description: "Color of the label text." },
+        { name: "borderColor", type: "string", description: "Color of the border." },
+        { name: "textColor", type: "string", description: "Color of the input text." },
+        { name: "placeholderColor", type: "string", description: "Color of the placeholder text." },
       ]
     }
   },
@@ -162,11 +192,16 @@ export const registryComponents = [
       props: [
         { name: "options", type: "SelectOption[]", description: "List of options." },
         { name: "onSelect", type: "(option: SelectOption) => void", description: "Called on selection." },
+        { name: "onChange", type: "(option: SelectOption) => void", description: "Called when the highlighted option changes." },
         { name: "label", type: "string", description: "Label above options." },
         { name: "indicator", type: "string", description: "Active item indicator.", default: '"❯"' },
         { name: "highlightColor", type: "string", description: "Color of the active item.", default: '"cyan"' },
         { name: "initialIndex", type: "number", description: "Initially highlighted index.", default: "0" },
         { name: "focus", type: "boolean", description: "Whether select is focused.", default: "true" },
+        { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
+        { name: "labelColor", type: "string", description: "Color of the label text." },
+        { name: "borderColor", type: "string", description: "Color of the border." },
+        { name: "textColor", type: "string", description: "Color of the unhighlighted option text." },
       ]
     }
   },
@@ -188,6 +223,10 @@ export const registryComponents = [
         { name: "variant", type: '"rounded" | "square"', description: "Checkbox style.", default: '"square"' },
         { name: "highlightColor", type: "string", description: "Color of focused/checked items.", default: '"cyan"' },
         { name: "focus", type: "boolean", description: "Whether accepting input.", default: "true" },
+        { name: "radius", type: '"none" | "round"', description: "Border radius.", default: '"none"' },
+        { name: "labelColor", type: "string", description: "Color of the label text." },
+        { name: "borderColor", type: "string", description: "Color of the border." },
+        { name: "textColor", type: "string", description: "Color of the unhighlighted item text." },
       ]
     }
   },
