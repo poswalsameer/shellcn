@@ -1,0 +1,17 @@
+{
+  "name": "test-app",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx index.tsx"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "ink": "^6.8.0",
+    "react": "^19.2.4"
+  }
+}

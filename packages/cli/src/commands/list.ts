@@ -48,7 +48,7 @@ export async function listCommand(): Promise<void> {
     console.log()
     console.log(
       chalk.dim("  Add a component: ") +
-      chalk.cyan("npx shellcn add <name>")
+      chalk.cyan("npx shellcn-tui add <name>")
     )
     console.log()
   } catch (error) {

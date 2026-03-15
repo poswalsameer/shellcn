@@ -40,7 +40,7 @@ export async function addCommand(componentName: string): Promise<void> {
     )
     console.log(
       chalk.dim("  Run ") +
-      chalk.cyan("npx shellcn init") +
+      chalk.cyan("npx shellcn-tui init") +
       chalk.dim(" first.")
     )
     console.log()
@@ -58,7 +58,7 @@ export async function addCommand(componentName: string): Promise<void> {
     )
     console.log(
       chalk.dim("  Run ") +
-      chalk.cyan("npx shellcn list") +
+      chalk.cyan("npx shellcn-tui list") +
       chalk.dim(" to see available components.")
     )
     console.log()

@@ -94,7 +94,7 @@ export async function initCommand(): Promise<void> {
   console.log(chalk.green("  ✓ ") + chalk.bold("shellcn initialized successfully!"))
   console.log()
   console.log(chalk.dim("  Next steps:"))
-  console.log(chalk.dim("  1. Add components:  ") + chalk.cyan("npx shellcn add separator"))
-  console.log(chalk.dim("  2. List components: ") + chalk.cyan("npx shellcn list"))
+  console.log(chalk.dim("  1. Add components:  ") + chalk.cyan("npx shellcn-tui add separator"))
+  console.log(chalk.dim("  2. List components: ") + chalk.cyan("npx shellcn-tui list"))
   console.log()
 }
