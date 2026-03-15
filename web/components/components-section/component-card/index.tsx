@@ -30,10 +30,10 @@ export function ComponentCard({ component, index }: {
   return (
     <Dialog key={component.name}>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.05 }}
+        transition={{ duration: 0.4, ease: "easeOut", delay: 0.4 + (index * 0.05) }}
       >
         <Card className="h-80 ring-0 flex flex-col rounded-none border-2 border-muted-foreground/30 hover:border-muted-foreground/40 transition-all bg-card hover:bg-muted/10 group overflow-hidden">
           <DialogTrigger asChild className="h-full">

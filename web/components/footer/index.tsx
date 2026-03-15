@@ -1,9 +1,16 @@
 import { Github, Linkedin, Twitter } from "lucide-react"
+import { motion } from "motion/react"
 
 export default function Footer() {
 
   return (
-    <footer className="w-full px-4 lg:px-0 lg:max-w-4xl xl:max-w-6xl py-6 flex flex-col sm:flex-row items-center justify-between text-sm gap-3 sm:gap-6">
+    <motion.footer
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+      className="w-full px-4 lg:px-0 lg:max-w-4xl xl:max-w-6xl py-6 flex flex-col sm:flex-row items-center justify-between text-sm gap-3 sm:gap-6"
+    >
       <div className="flex items-center gap-1 cursor-default">
         <span className="text-muted-foreground font-medium">Built for your terminal, by</span>
         <a
@@ -45,6 +52,6 @@ export default function Footer() {
           <Linkedin className="h-4 w-4" />
         </a>
       </div>
-    </footer>
+    </motion.footer>
   )
 }

@@ -8,7 +8,7 @@ export const registryComponents = [
   // PROGRESS
   {
     name: "Progress",
-    command: "npx shellcn add progress",
+    command: "npx shellcn-tui add progress",
     preview: <ProgressPreview />,
     docs: {
       description: "Progress bar component for indicating completion percentage.",
@@ -30,7 +30,7 @@ export const registryComponents = [
   // CONTAINER 
   {
     name: "Container",
-    command: "npx shellcn add container",
+    command: "npx shellcn-tui add container",
     preview: <ContainerPreview />,
     docs: {
       description: "A layout container for padding, margin, borders, and flexbox.",
@@ -68,7 +68,7 @@ export const registryComponents = [
   // CARD
   {
     name: "Card",
-    command: "npx shellcn add card",
+    command: "npx shellcn-tui add card",
     preview: <CardPreview />,
     docs: {
       description: "A bordered container component for grouping related content, often used with Titles and Footers.",
@@ -89,7 +89,7 @@ export const registryComponents = [
   // ALERT
   {
     name: "Alert",
-    command: "npx shellcn add alert",
+    command: "npx shellcn-tui add alert",
     preview: <AlertPreview />,
     docs: {
       description: "Alert box component for displaying colored messages.",
@@ -113,7 +113,7 @@ export const registryComponents = [
   // TEXT
   {
     name: "Text",
-    command: "npx shellcn add text",
+    command: "npx shellcn-tui add text",
     preview: <TextPreview />,
     docs: {
       description: "Styled text component with colors and formatting.",
@@ -137,7 +137,7 @@ export const registryComponents = [
   // TABLE 
   {
     name: "Table",
-    command: "npx shellcn add table",
+    command: "npx shellcn-tui add table",
     preview: <TablePreview />,
     docs: {
       description: "Data table component with headers and borders.",
@@ -157,7 +157,7 @@ export const registryComponents = [
   // INPUT 
   {
     name: "Input",
-    command: "npx shellcn add input",
+    command: "npx shellcn-tui add input",
     preview: <InputPreview />,
     docs: {
       description: "Text input component for capturing keyboard input.",
@@ -183,7 +183,7 @@ export const registryComponents = [
   // SELECT 
   {
     name: "Select",
-    command: "npx shellcn add select",
+    command: "npx shellcn-tui add select",
     preview: <SelectPreview />,
     docs: {
       description: "Arrow-key select menu for choosing from a list of options.",
@@ -209,7 +209,7 @@ export const registryComponents = [
   // CHECKBOX 
   {
     name: "Checkbox",
-    command: "npx shellcn add checkbox",
+    command: "npx shellcn-tui add checkbox",
     preview: <CheckboxPreview />,
     docs: {
       description: "Multi-select checkbox list.",
@@ -234,7 +234,7 @@ export const registryComponents = [
   // SEPARATOR 
   {
     name: "Separator",
-    command: "npx shellcn add separator",
+    command: "npx shellcn-tui add separator",
     preview: <SeparatorPreview />,
     docs: {
       description: "Visually separates content with a horizontal or vertical line.",

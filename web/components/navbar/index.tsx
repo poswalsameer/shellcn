@@ -1,10 +1,16 @@
 import { Github, Terminal } from "lucide-react"
 import { ModeToggle } from "../theme-toggle"
 import { Button } from "@/components/ui/button"
+import { motion } from "motion/react"
 
 export default function Navbar() {
   return (
-    <nav className="w-full px-4 lg:px-0 lg:max-w-4xl xl:max-w-6xl flex items-center justify-between py-6">
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="w-full px-4 lg:px-0 lg:max-w-4xl xl:max-w-6xl flex items-center justify-between py-6"
+    >
       <div className="font-black text-xl flex items-center gap-1 tracking-tighter cursor-default group">
         <div className="bg-foreground text-background p-0.5 flex items-center justify-center">
           <Terminal className="h-3 w-3" strokeWidth={3} />
@@ -31,6 +37,6 @@ export default function Navbar() {
         </Button>
         <ModeToggle />
       </div>
-    </nav>
+    </motion.nav>
   )
 }

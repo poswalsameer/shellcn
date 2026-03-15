@@ -2,6 +2,7 @@
 
 import type { DocsSchema } from "@/types"
 import { CodeBlock } from "@/components/common/code-block"
+import { motion } from "motion/react"
 import {
   Table,
   TableBody,
@@ -13,25 +14,45 @@ import {
 
 export function DocsRenderer({ docs }: { docs: DocsSchema }) {
   return (
-    <div className="flex flex-col gap-8 sm:gap-12 mt-4 pb-8 sm:pb-12 w-full max-w-full animate-in fade-in slide-in-from-bottom-2 duration-500 selection:bg-foreground selection:text-background">
-      <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-8 sm:gap-12 mt-4 pb-8 sm:pb-12 w-full max-w-full selection:bg-foreground selection:text-background">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+        className="flex flex-col gap-1"
+      >
         <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground border-b border-border/40">Introduction</h2>
         <p className="text-base sm:text-lg font-medium text-muted-foreground leading-relaxed max-w-3xl">
           {docs.description}
         </p>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col gap-2">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        className="flex flex-col gap-2"
+      >
         <h3 className="text-base sm:text-lg font-semibold text-muted-foreground tracking-tight">Import</h3>
         <CodeBlock code={docs.import} language="tsx" />
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col gap-2">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+        className="flex flex-col gap-2"
+      >
         <h3 className="text-base sm:text-lg font-semibold text-muted-foreground tracking-tight">Basic Usage</h3>
         <CodeBlock code={docs.example} language="tsx" />
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col gap-2 w-full max-w-full">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
+        className="flex flex-col gap-2 w-full max-w-full"
+      >
         <div className="flex flex-col gap-2">
           <h3 className="text-base sm:text-lg font-semibold text-muted-foreground tracking-tight">List of all available props</h3>
         </div>
@@ -76,7 +97,7 @@ export function DocsRenderer({ docs }: { docs: DocsSchema }) {
             </TableBody>
           </Table>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
