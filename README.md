@@ -19,7 +19,7 @@ Build beautiful and interactive command-line interfaces with React. `shellcn` pr
 Run the `init` command to set up `shellcn` in your Ink project. This will create a `components.json` configuration file and ask you where you'd like your components to reside.
 
 ```bash
-npx shellcn init
+npx shellcn-tui init
 ```
 
 ### 2. Available Components
@@ -27,7 +27,7 @@ npx shellcn init
 You can explore the list of components that are ready to be integrated into your project by running:
 
 ```bash
-npx shellcn list
+npx shellcn-tui list
 ```
 
 ### 3. Add Components
@@ -35,7 +35,7 @@ npx shellcn list
 Add any component to your project using the `add` command. For example, to add a beautiful stylized `card` component:
 
 ```bash
-npx shellcn add card
+npx shellcn-tui add card
 ```
 
 When you run this command:

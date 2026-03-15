@@ -1,5 +1,5 @@
 {
-  "name": "shellcn",
+  "name": "shellcn-tui",
   "version": "1.0.0",
   "description": "CLI tool for the shellcn terminal UI component system",
   "type": "module",
