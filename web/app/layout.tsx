@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Manrope, JetBrains_Mono } from "next/font/google"
 import { ThemeProvider } from "@/providers/theme-provider"
+import { Analytics } from '@vercel/analytics/next'
 import "./globals.css"
 
 const manrope = Manrope({
@@ -32,6 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Analytics />
           {children}
         </ThemeProvider>
       </body>
