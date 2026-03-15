@@ -1,13 +1,10 @@
-import React from "react"
-import { render, Text, Box } from "ink"
+import { render } from "ink"
+import Text from "./src/components/shellcn/text"
+
 
 const App = () => {
   return (
-    <Box padding={2} borderStyle="round" borderColor="green">
-      <Text color="green" bold>
-        Welcome to your shellcn test app!
-      </Text>
-    </Box>
+    <Text color="green" italic>Hello world</Text>
   )
 }
 
