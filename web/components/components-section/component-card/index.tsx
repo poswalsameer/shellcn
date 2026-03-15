@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import { motion } from "motion/react"
-import { Check, Copy } from "lucide-react"
+import { Check, Copy, X } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import type { RegistryComponent } from "@/types"
 import { DocsRenderer } from "@/components/components-section/docs-renderer"
 import {
@@ -13,6 +14,7 @@ import {
   DialogContent,
   DialogTrigger,
   DialogDescription,
+  DialogClose,
 } from "@/components/ui/dialog"
 
 export function ComponentCard({ component, index }: {
@@ -58,14 +60,20 @@ export function ComponentCard({ component, index }: {
         </Card>
       </motion.div>
 
-      <DialogContent className="w-[95vw] sm:max-w-4xl md:max-w-5xl lg:max-w-6xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto custom-scrollbar border-2 border-muted-foreground/30 ring-0 bg-background p-0 rounded-none sm:rounded-lg selection:bg-foreground selection:text-background">
-        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 px-4 sm:px-8 py-4 sm:py-6">
+      <DialogContent showCloseButton={false} className="w-[95vw] sm:max-w-4xl md:max-w-5xl lg:max-w-6xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto custom-scrollbar border-2 border-muted-foreground/30 ring-0 bg-background p-0 rounded-none sm:rounded-lg selection:bg-foreground selection:text-background">
+        <div className="sticky top-0 z-50 flex items-start justify-between gap-4 bg-background/80 backdrop-blur-md border-b border-border/40 px-4 sm:px-8 py-4 sm:py-6">
           <DialogHeader className="flex flex-col gap-y-1">
             <DialogTitle className="text-xl sm:text-2xl font-semibold tracking-tight uppercase">{component.name}</DialogTitle>
             <DialogDescription className="text-sm sm:text-lg text-muted-foreground font-medium">
               Documentation and reference to use {component.name.toLowerCase()} component
             </DialogDescription>
           </DialogHeader>
+          <DialogClose asChild>
+            <Button variant="ghost" size="icon" className="shrink-0 h-8 w-8 sm:h-10 sm:w-10 rounded-none border-2 border-transparent hover:border-muted-foreground/30 hover:bg-muted/40 transition-all duration-300">
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="sr-only">Close</span>
+            </Button>
+          </DialogClose>
         </div>
 
         <div className="px-4 sm:px-8 w-full max-w-full overflow-x-hidden">
