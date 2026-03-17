@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import readline from "readline"
 import { readConfig, resolveComponentsDir } from "../utils/project.js"
-import { loadRegistry, getComponent } from "../utils/registry.js"
+import { getComponent, resolveComponentInstallPlan } from "../utils/registry.js"
 import { downloadComponent, componentExists } from "../utils/downloader.js"
 
 /**
@@ -47,58 +47,87 @@ export async function addCommand(componentName: string): Promise<void> {
     return
   }
 
-  // Look up the component
-  const component = await getComponent(componentName)
-  if (!component) {
-    console.log(
-      chalk.red("  ✗ ") +
-      chalk.dim("Component ") +
-      chalk.white(`"${componentName}"`) +
-      chalk.dim(" not found in the registry.")
-    )
-    console.log(
-      chalk.dim("  Run ") +
-      chalk.cyan("npx shellcn-tui list") +
-      chalk.dim(" to see available components.")
-    )
-    console.log()
-    return
-  }
-
   const targetDir = resolveComponentsDir(cwd, config)
+  try {
+    const installPlan = await resolveComponentInstallPlan(componentName)
+    const requestedComponent = await getComponent(componentName)
 
-  // Check if component already exists
-  if (componentExists(component.path, targetDir)) {
-    const shouldOverwrite = await confirm(
-      chalk.yellow("  ⚠ ") +
-      chalk.dim(`${componentName} already exists. Overwrite? `) +
-      chalk.white("[y/N] ")
-    )
-
-    if (!shouldOverwrite) {
-      console.log(chalk.dim("  Skipped."))
+    if (!requestedComponent) {
+      console.log(
+        chalk.red("  ✗ ") +
+        chalk.dim("Component ") +
+        chalk.white(`"${componentName}"`) +
+        chalk.dim(" not found in the registry.")
+      )
+      console.log(
+        chalk.dim("  Run ") +
+        chalk.cyan("npx shellcn-tui list") +
+        chalk.dim(" to see available components.")
+      )
       console.log()
       return
     }
-  }
 
-  // Download and copy the component
-  try {
-    const destPath = await downloadComponent(component.path, targetDir)
-    console.log(
-      chalk.green("  ✓ ") +
-      chalk.dim("Added ") +
-      chalk.bold.white(componentName) +
-      chalk.dim(" → ") +
-      chalk.white(destPath.replace(cwd, "."))
-    )
+    let shouldOverwriteRequested = true
+    if (componentExists(requestedComponent.path, targetDir)) {
+      shouldOverwriteRequested = await confirm(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim(`${componentName} already exists. Overwrite? `) +
+        chalk.white("[y/N] ")
+      )
+    }
 
-    // Show dependencies if any
-    if (component.dependencies && component.dependencies.length > 0) {
+    if (installPlan.components.length > 1) {
       console.log(
         chalk.blue("  ◆ ") +
-        chalk.dim("This component requires: ") +
-        chalk.white(component.dependencies.join(", "))
+        chalk.dim("Resolved dependencies: ") +
+        chalk.white(installPlan.components.join(" -> "))
+      )
+    }
+
+    const addedComponents: string[] = []
+    const skippedComponents: string[] = []
+
+    for (const name of installPlan.components) {
+      const component = await getComponent(name)
+
+      if (!component) {
+        throw new Error(`Component "${name}" is missing from the registry.`)
+      }
+
+      const isRequestedComponent = name === componentName
+      const alreadyExists = componentExists(component.path, targetDir)
+
+      if (alreadyExists && (!isRequestedComponent || !shouldOverwriteRequested)) {
+        skippedComponents.push(name)
+        continue
+      }
+
+      const destPath = await downloadComponent(component.path, targetDir)
+      addedComponents.push(name)
+
+      console.log(
+        chalk.green("  ✓ ") +
+        chalk.dim("Added ") +
+        chalk.bold.white(name) +
+        chalk.dim(" → ") +
+        chalk.white(destPath.replace(cwd, "."))
+      )
+    }
+
+    if (addedComponents.length > 0) {
+      console.log(
+        chalk.blue("  ◆ ") +
+        chalk.dim("Added components: ") +
+        chalk.white(addedComponents.join(", "))
+      )
+    }
+
+    if (skippedComponents.length > 0) {
+      console.log(
+        chalk.blue("  ◆ ") +
+        chalk.dim("Skipped existing: ") +
+        chalk.white(skippedComponents.join(", "))
       )
     }
   } catch (error) {
