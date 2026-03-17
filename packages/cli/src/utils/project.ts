@@ -1,3 +1,4 @@
+import { execSync } from "child_process"
 import fs from "fs-extra"
 import path from "path"
 import { CONFIG_FILE_NAME, DEFAULT_COMPONENTS_PATH } from "../config/defaults.js"
@@ -7,14 +8,132 @@ export interface ShellcnConfig {
   componentsPath: string
 }
 
+export type PackageManager = "npm" | "yarn" | "pnpm"
+
+export interface ProjectPackageJson {
+  dependencies?: Record<string, string>
+  devDependencies?: Record<string, string>
+}
+
+export interface MissingProjectPackages {
+  dependencies: Record<string, string>
+  devDependencies: Record<string, string>
+}
+
 /**
  * Detects which package manager is being used in the current project.
  * Checks for lock files in order: pnpm, yarn, then falls back to npm.
  */
-export function detectPackageManager(cwd: string): "npm" | "yarn" | "pnpm" {
+export function detectPackageManager(cwd: string): PackageManager {
   if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) return "pnpm"
   if (fs.existsSync(path.join(cwd, "yarn.lock"))) return "yarn"
   return "npm"
+}
+
+/**
+ * Reads the consumer package.json from the current working directory.
+ */
+export async function readProjectPackageJson(
+  cwd: string
+): Promise<ProjectPackageJson | null> {
+  const packageJsonPath = path.join(cwd, "package.json")
+
+  if (!fs.existsSync(packageJsonPath)) {
+    return null
+  }
+
+  return (await fs.readJSON(packageJsonPath)) as ProjectPackageJson
+}
+
+/**
+ * Computes the missing runtime and dev package dependencies for a project.
+ */
+export function getMissingProjectPackages(
+  packageJson: ProjectPackageJson | null,
+  dependencies: Record<string, string>,
+  devDependencies: Record<string, string>
+): MissingProjectPackages {
+  const declaredDependencies = packageJson?.dependencies ?? {}
+  const declaredDevDependencies = packageJson?.devDependencies ?? {}
+  const missingDependencies: Record<string, string> = {}
+  const missingDevDependencies: Record<string, string> = {}
+
+  for (const [packageName, version] of Object.entries(dependencies)) {
+    if (!(packageName in declaredDependencies) && !(packageName in declaredDevDependencies)) {
+      missingDependencies[packageName] = version
+    }
+  }
+
+  for (const [packageName, version] of Object.entries(devDependencies)) {
+    if (packageName in dependencies) {
+      continue
+    }
+
+    if (!(packageName in declaredDependencies) && !(packageName in declaredDevDependencies)) {
+      missingDevDependencies[packageName] = version
+    }
+  }
+
+  return {
+    dependencies: missingDependencies,
+    devDependencies: missingDevDependencies,
+  }
+}
+
+/**
+ * Builds a package manager install command for runtime or dev packages.
+ */
+export function buildInstallCommand(
+  packageManager: PackageManager,
+  packages: string[],
+  options?: { dev?: boolean }
+): string | null {
+  if (packages.length === 0) {
+    return null
+  }
+
+  const flag = options?.dev ? " -D" : ""
+  const packageList = packages.join(" ")
+
+  if (packageManager === "yarn") {
+    return `yarn add${flag} ${packageList}`
+  }
+
+  if (packageManager === "pnpm") {
+    return `pnpm add${flag} ${packageList}`
+  }
+
+  return `npm install${flag} ${packageList}`
+}
+
+/**
+ * Turns a package map into installable package@version specs.
+ */
+export function toPackageSpecs(
+  packages: Record<string, string>
+): string[] {
+  return Object.entries(packages).map(([packageName, version]) => (
+    `${packageName}@${version}`
+  ))
+}
+
+/**
+ * Installs packages in the current project using the detected package manager.
+ */
+export function installProjectPackages(
+  cwd: string,
+  packageManager: PackageManager,
+  packages: string[],
+  options?: { dev?: boolean }
+): string | null {
+  const command = buildInstallCommand(packageManager, packages, options)
+
+  if (!command) {
+    return null
+  }
+
+  execSync(command, { cwd, stdio: "pipe" })
+  return command
 }
 
 /**

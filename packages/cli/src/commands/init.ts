@@ -1,4 +1,3 @@
-import { execSync } from "child_process"
 import chalk from "chalk"
 import fs from "fs-extra"
 import path from "path"
@@ -7,7 +6,12 @@ import {
   CONFIG_FILE_NAME,
   REQUIRED_DEPENDENCIES,
 } from "../config/defaults.js"
-import { detectPackageManager, writeConfig } from "../utils/project.js"
+import {
+  buildInstallCommand,
+  detectPackageManager,
+  installProjectPackages,
+  writeConfig,
+} from "../utils/project.js"
 
 /**
  * Handles the `shellcn init` command.
@@ -58,12 +62,7 @@ export async function initCommand(): Promise<void> {
 
   // Step 3: Install dependencies
   const pm = detectPackageManager(cwd)
-  const installCmd =
-    pm === "yarn"
-      ? `yarn add ${REQUIRED_DEPENDENCIES.join(" ")}`
-      : pm === "pnpm"
-        ? `pnpm add ${REQUIRED_DEPENDENCIES.join(" ")}`
-        : `npm install ${REQUIRED_DEPENDENCIES.join(" ")}`
+  const installCmd = buildInstallCommand(pm, [...REQUIRED_DEPENDENCIES])
 
   console.log(
     chalk.blue("  ◆ ") +
@@ -73,7 +72,7 @@ export async function initCommand(): Promise<void> {
   )
 
   try {
-    execSync(installCmd, { cwd, stdio: "pipe" })
+    installProjectPackages(cwd, pm, [...REQUIRED_DEPENDENCIES])
     console.log(
       chalk.green("  ✓ ") +
       chalk.dim("Installed: ") +
@@ -85,7 +84,7 @@ export async function initCommand(): Promise<void> {
       chalk.dim("Could not install dependencies automatically.")
     )
     console.log(
-      chalk.dim("  Run manually: ") + chalk.white(installCmd)
+      chalk.dim("  Run manually: ") + chalk.white(installCmd ?? "")
     )
   }
 

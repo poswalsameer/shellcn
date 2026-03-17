@@ -1,6 +1,14 @@
 import chalk from "chalk"
 import readline from "readline"
-import { readConfig, resolveComponentsDir } from "../utils/project.js"
+import {
+  detectPackageManager,
+  getMissingProjectPackages,
+  installProjectPackages,
+  readConfig,
+  readProjectPackageJson,
+  resolveComponentsDir,
+  toPackageSpecs,
+} from "../utils/project.js"
 import { getComponent, resolveComponentInstallPlan } from "../utils/registry.js"
 import { downloadComponent, componentExists } from "../utils/downloader.js"
 
@@ -51,6 +59,7 @@ export async function addCommand(componentName: string): Promise<void> {
   try {
     const installPlan = await resolveComponentInstallPlan(componentName)
     const requestedComponent = await getComponent(componentName)
+    const packageJson = await readProjectPackageJson(cwd)
 
     if (!requestedComponent) {
       console.log(
@@ -68,6 +77,20 @@ export async function addCommand(componentName: string): Promise<void> {
       return
     }
 
+    const missingPackages = getMissingProjectPackages(
+      packageJson,
+      installPlan.dependencies,
+      installPlan.devDependencies
+    )
+    const runtimeSpecs = toPackageSpecs(missingPackages.dependencies)
+    const devSpecs = toPackageSpecs(missingPackages.devDependencies)
+
+    if ((runtimeSpecs.length > 0 || devSpecs.length > 0) && !packageJson) {
+      throw new Error(
+        "No package.json found in the current project. shellcn cannot install npm dependencies automatically."
+      )
+    }
+
     let shouldOverwriteRequested = true
     if (componentExists(requestedComponent.path, targetDir)) {
       shouldOverwriteRequested = await confirm(
@@ -83,6 +106,40 @@ export async function addCommand(componentName: string): Promise<void> {
         chalk.dim("Resolved dependencies: ") +
         chalk.white(installPlan.components.join(" -> "))
       )
+    }
+
+    if (runtimeSpecs.length > 0 || devSpecs.length > 0) {
+      const packageManager = detectPackageManager(cwd)
+
+      if (runtimeSpecs.length > 0) {
+        console.log(
+          chalk.blue("  ◆ ") +
+          chalk.dim("Installing dependencies with ") +
+          chalk.white(packageManager) +
+          chalk.dim("...")
+        )
+        installProjectPackages(cwd, packageManager, runtimeSpecs)
+        console.log(
+          chalk.green("  ✓ ") +
+          chalk.dim("Installed dependencies: ") +
+          chalk.white(Object.keys(missingPackages.dependencies).join(", "))
+        )
+      }
+
+      if (devSpecs.length > 0) {
+        console.log(
+          chalk.blue("  ◆ ") +
+          chalk.dim("Installing devDependencies with ") +
+          chalk.white(packageManager) +
+          chalk.dim("...")
+        )
+        installProjectPackages(cwd, packageManager, devSpecs, { dev: true })
+        console.log(
+          chalk.green("  ✓ ") +
+          chalk.dim("Installed devDependencies: ") +
+          chalk.white(Object.keys(missingPackages.devDependencies).join(", "))
+        )
+      }
     }
 
     const addedComponents: string[] = []
