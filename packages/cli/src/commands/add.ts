@@ -36,6 +36,10 @@ function confirm(question: string): Promise<boolean> {
  */
 export async function addCommand(componentName: string): Promise<void> {
   const cwd = process.cwd()
+  const addedComponents: string[] = []
+  const skippedComponents: string[] = []
+  const installedDependencies: string[] = []
+  const installedDevDependencies: string[] = []
 
   console.log()
 
@@ -119,6 +123,7 @@ export async function addCommand(componentName: string): Promise<void> {
           chalk.dim("...")
         )
         installProjectPackages(cwd, packageManager, runtimeSpecs)
+        installedDependencies.push(...Object.keys(missingPackages.dependencies))
         console.log(
           chalk.green("  ✓ ") +
           chalk.dim("Installed dependencies: ") +
@@ -134,6 +139,7 @@ export async function addCommand(componentName: string): Promise<void> {
           chalk.dim("...")
         )
         installProjectPackages(cwd, packageManager, devSpecs, { dev: true })
+        installedDevDependencies.push(...Object.keys(missingPackages.devDependencies))
         console.log(
           chalk.green("  ✓ ") +
           chalk.dim("Installed devDependencies: ") +
@@ -141,9 +147,6 @@ export async function addCommand(componentName: string): Promise<void> {
         )
       }
     }
-
-    const addedComponents: string[] = []
-    const skippedComponents: string[] = []
 
     for (const name of installPlan.components) {
       const component = await getComponent(name)
@@ -190,6 +193,38 @@ export async function addCommand(componentName: string): Promise<void> {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     console.log(chalk.red("  ✗ ") + chalk.dim(message))
+
+    if (installedDependencies.length > 0) {
+      console.log(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim("Installed dependencies before failure: ") +
+        chalk.white(installedDependencies.join(", "))
+      )
+    }
+
+    if (installedDevDependencies.length > 0) {
+      console.log(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim("Installed devDependencies before failure: ") +
+        chalk.white(installedDevDependencies.join(", "))
+      )
+    }
+
+    if (addedComponents.length > 0) {
+      console.log(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim("Added components before failure: ") +
+        chalk.white(addedComponents.join(", "))
+      )
+    }
+
+    if (skippedComponents.length > 0) {
+      console.log(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim("Skipped components before failure: ") +
+        chalk.white(skippedComponents.join(", "))
+      )
+    }
   }
 
   console.log()

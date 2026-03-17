@@ -132,7 +132,24 @@ export function installProjectPackages(
     return null
   }
 
-  execSync(command, { cwd, stdio: "pipe" })
+  try {
+    execSync(command, { cwd, stdio: "pipe" })
+  } catch (error) {
+    const stderr = typeof error === "object" && error !== null && "stderr" in error
+      ? String((error as { stderr?: Buffer | string }).stderr ?? "").trim()
+      : ""
+    const stdout = typeof error === "object" && error !== null && "stdout" in error
+      ? String((error as { stdout?: Buffer | string }).stdout ?? "").trim()
+      : ""
+    const details = stderr || stdout
+
+    throw new Error(
+      details
+        ? `Package installation failed while running "${command}": ${details}`
+        : `Package installation failed while running "${command}".`
+    )
+  }
+
   return command
 }
 

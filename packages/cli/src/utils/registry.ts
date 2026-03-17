@@ -60,10 +60,9 @@ async function fetchRegistryFile<T>(
 
     return (await response.json()) as T
   } catch (error) {
-    const details = error instanceof Error ? ` ${error.message}` : ""
+    const details = error instanceof Error ? error.message : "Unknown error"
     throw new Error(
-      `Could not load ${label} from ${fileUrl}. ` +
-      `Make sure you have an active internet connection.${details}`
+      `Could not load ${label} from ${fileUrl}: ${details}`
     )
   }
 }
