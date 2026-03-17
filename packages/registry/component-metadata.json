@@ -1,0 +1,54 @@
+{
+  "components": {
+    "text": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "container": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "separator": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "progress": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "table": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "input": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "select": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "checkbox": {
+      "registryDependencies": [],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "alert": {
+      "registryDependencies": ["text", "container"],
+      "dependencies": {},
+      "devDependencies": {}
+    },
+    "card": {
+      "registryDependencies": ["text", "container"],
+      "dependencies": {},
+      "devDependencies": {}
+    }
+  }
+}
