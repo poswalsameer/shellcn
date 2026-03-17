@@ -2,6 +2,31 @@ import fs from "fs-extra"
 import path from "path"
 import { resolveComponentPath } from "./registry.js"
 
+const REGISTRY_COMPONENTS_DIR = "components/"
+
+/**
+ * Maps a registry component path to its local destination path.
+ * Registry files are stored under `components/`, while local installs live
+ * directly inside the configured components directory.
+ */
+export function resolveLocalComponentPath(
+  componentPath: string,
+  targetDir: string
+): string {
+  const normalizedPath = componentPath.replaceAll("\\", "/")
+  const relativeComponentPath = normalizedPath.startsWith(REGISTRY_COMPONENTS_DIR)
+    ? normalizedPath.slice(REGISTRY_COMPONENTS_DIR.length)
+    : normalizedPath
+
+  const segments = relativeComponentPath.split("/").filter(Boolean)
+
+  if (segments.length === 0 || segments.includes("..")) {
+    throw new Error(`Invalid registry component path: ${componentPath}`)
+  }
+
+  return path.join(targetDir, ...segments)
+}
+
 /**
  * Downloads a component template from the GitHub registry into the user's project.
  *
@@ -14,8 +39,7 @@ export async function downloadComponent(
   targetDir: string
 ): Promise<string> {
   const sourceUrl = resolveComponentPath(componentPath)
-  const fileName = path.basename(componentPath)
-  const destPath = path.join(targetDir, fileName)
+  const destPath = resolveLocalComponentPath(componentPath, targetDir)
 
   const response = await fetch(sourceUrl)
 
@@ -29,7 +53,7 @@ export async function downloadComponent(
   const content = await response.text()
 
   // Ensure the target directory exists
-  await fs.ensureDir(targetDir)
+  await fs.ensureDir(path.dirname(destPath))
 
   // Write the fetched source code to the destination
   await fs.writeFile(destPath, content)
@@ -44,6 +68,5 @@ export function componentExists(
   componentPath: string,
   targetDir: string
 ): boolean {
-  const fileName = path.basename(componentPath)
-  return fs.existsSync(path.join(targetDir, fileName))
+  return fs.existsSync(resolveLocalComponentPath(componentPath, targetDir))
 }
