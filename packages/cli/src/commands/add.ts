@@ -1,6 +1,7 @@
+import { execSync } from "child_process"
 import chalk from "chalk"
 import readline from "readline"
-import { readConfig, resolveComponentsDir } from "../utils/project.js"
+import { readConfig, resolveComponentsDir, detectPackageManager } from "../utils/project.js"
 import { loadRegistry, type ComponentEntry } from "../utils/registry.js"
 import { downloadComponent, componentExists } from "../utils/downloader.js"
 
@@ -136,6 +137,11 @@ export async function addCommand(componentName: string): Promise<void> {
 
   const targetDir = resolveComponentsDir(cwd, config)
 
+  const npmDependencies = new Set<string>()
+  if (component.dependencies) {
+    component.dependencies.forEach((d) => npmDependencies.add(d))
+  }
+
   // ─── Dependency resolution ────────────────────────────────────────────────
   const depNames = await resolveAllDependencies(componentName, registry)
 
@@ -169,6 +175,10 @@ export async function addCommand(componentName: string): Promise<void> {
         const depEntry = registry[dep]
         if (!depEntry) continue
 
+        if (depEntry.dependencies) {
+          depEntry.dependencies.forEach((d) => npmDependencies.add(d))
+        }
+
         try {
           await installComponent(dep, depEntry, targetDir, cwd, true)
         } catch (error) {
@@ -189,6 +199,8 @@ export async function addCommand(componentName: string): Promise<void> {
 
   // ─── Main component ───────────────────────────────────────────────────────
 
+  let skipMain = false
+
   // Check if the main component already exists and prompt for overwrite
   if (componentExists(component.path, targetDir)) {
     const shouldOverwrite = await confirm(
@@ -199,25 +211,49 @@ export async function addCommand(componentName: string): Promise<void> {
 
     if (!shouldOverwrite) {
       console.log(chalk.dim("  Skipped."))
-      console.log()
-      return
+      skipMain = true
     }
   }
 
-  try {
-    await installComponent(componentName, component, targetDir, cwd, false)
+  if (!skipMain) {
+    try {
+      await installComponent(componentName, component, targetDir, cwd, false)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      console.log(chalk.red("  ✗ ") + chalk.dim(message))
+    }
+  }
 
-    // Show npm dependencies if any
-    if (component.dependencies && component.dependencies.length > 0) {
+  // Install npm dependencies if any
+  if (npmDependencies.size > 0) {
+    const pm = detectPackageManager(cwd)
+    const depsArray = Array.from(npmDependencies)
+    const pmCmd = pm === "npm" ? "npm install" : `${pm} add`
+    const installCmd = `${pmCmd} ${depsArray.join(" ")}`
+
+    console.log(
+      chalk.blue("  ◆ ") +
+      chalk.dim("Installing npm dependencies with ") +
+      chalk.white(pm) +
+      chalk.dim("...")
+    )
+
+    try {
+      execSync(installCmd, { cwd, stdio: "pipe" })
       console.log(
-        chalk.blue("  ◆ ") +
-        chalk.dim("This component requires npm packages: ") +
-        chalk.white(component.dependencies.join(", "))
+        chalk.green("  ✓ ") +
+        chalk.dim("Installed npm packages: ") +
+        chalk.white(depsArray.join(", "))
+      )
+    } catch (error) {
+      console.log(
+        chalk.yellow("  ⚠ ") +
+        chalk.dim("Could not install dependencies automatically.")
+      )
+      console.log(
+        chalk.dim("  Run manually: ") + chalk.white(installCmd)
       )
     }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    console.log(chalk.red("  ✗ ") + chalk.dim(message))
   }
 
   console.log()
