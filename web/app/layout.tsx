@@ -15,11 +15,14 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://shellcn.sameerposwal.xyz"),
   title: "shellcn | Building Terminal UIs is finally easy",
   description: "A collection of accessible, customisable, and open source components for building stunning CLI applications.",
   openGraph: {
     title: "shellcn | Building Terminal UIs is finally easy",
     description: "A collection of accessible, customisable, and open source components for building stunning CLI applications.",
+    url: "https://shellcn.sameerposwal.xyz",
+    siteName: "shellcn",
     type: "website",
     images: [
       {
@@ -34,7 +37,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "shellcn | Building Terminal UIs is finally easy",
     description: "A collection of accessible, customisable, and open source components for building stunning CLI applications.",
-    images: ["https://res.cloudinary.com/sameerposwal/image/upload/v1774172914/Screenshot_2026-03-22_141509_mqprvk.png"],
+    images: [
+      {
+        url: "https://res.cloudinary.com/sameerposwal/image/upload/v1774172914/Screenshot_2026-03-22_141509_mqprvk.png",
+        width: 1200,
+        height: 630,
+        alt: "shellcn | Building Terminal UIs is finally easy",
+      },
+    ],
   },
 }
 
