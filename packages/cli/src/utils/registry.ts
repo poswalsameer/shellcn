@@ -10,6 +10,10 @@ export interface ComponentEntry {
   path: string
   /** Short description of the component. */
   description: string
+  /** Optional list of additional npm dependencies required by the component. */
+  dependencies?: string[]
+  /** Optional list of other shellcn component names this component requires. */
+  registryDependencies?: string[]
 }
 
 /** Shape of the components.json registry manifest. */

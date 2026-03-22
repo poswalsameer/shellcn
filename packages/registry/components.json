@@ -2,43 +2,53 @@
   "components": {
     "text": {
       "path": "components/text.tsx",
-      "description": "Styled text with color, bold, dim, underline, and strikethrough support"
+      "description": "Styled text with color, bold, dim, underline, and strikethrough support",
+      "registryDependencies": []
     },
     "container": {
       "path": "components/container.tsx",
-      "description": "Layout container with padding, margin, border, and flex"
+      "description": "Layout container with padding, margin, border, and flex",
+      "registryDependencies": []
     },
     "separator": {
       "path": "components/separator.tsx",
-      "description": "Visually or semantically separates content."
+      "description": "Visually or semantically separates content.",
+      "registryDependencies": []
     },
     "progress": {
       "path": "components/progress.tsx",
-      "description": "Progress bar with percentage display and customizable fill"
+      "description": "Progress bar with percentage display and customizable fill",
+      "registryDependencies": []
     },
     "table": {
       "path": "components/table.tsx",
-      "description": "Data table with headers, column alignment, and borders"
+      "description": "Data table with headers, column alignment, and borders",
+      "registryDependencies": []
     },
     "input": {
       "path": "components/input.tsx",
-      "description": "Text input with placeholder, onChange, and onSubmit"
+      "description": "Text input with placeholder, onChange, and onSubmit",
+      "registryDependencies": []
     },
     "select": {
       "path": "components/select.tsx",
-      "description": "Arrow-key select menu with highlight styling"
+      "description": "Arrow-key select menu with highlight styling",
+      "registryDependencies": []
     },
     "checkbox": {
       "path": "components/checkbox.tsx",
-      "description": "Multi-select checkbox list with toggle support"
+      "description": "Multi-select checkbox list with toggle support",
+      "registryDependencies": []
     },
     "alert": {
       "path": "components/alert.tsx",
-      "description": "Alert box with info, success, warning, and error variants"
+      "description": "Alert box with info, success, warning, and error variants",
+      "registryDependencies": ["container", "text"]
     },
     "card": {
       "path": "components/card.tsx",
-      "description": "Bordered card container with optional title and footer"
+      "description": "Bordered card container with optional title and footer",
+      "registryDependencies": ["container", "text"]
     }
   }
 }

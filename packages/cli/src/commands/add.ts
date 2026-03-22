@@ -43,7 +43,6 @@ export async function addCommand(componentName: string): Promise<void> {
 
   console.log()
 
-  // Read project config
   const config = await readConfig(cwd)
   if (!config) {
     console.log(
@@ -60,6 +59,7 @@ export async function addCommand(componentName: string): Promise<void> {
   }
 
   const targetDir = resolveComponentsDir(cwd, config)
+
   try {
     const installPlan = await resolveComponentInstallPlan(componentName)
     const requestedComponent = await getComponent(componentName)
